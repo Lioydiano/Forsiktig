@@ -223,7 +223,7 @@ public:
 
 
 void Enemy::fireBullet() {
-    Bullet bullet(this->x, this->y, bullet_speed, this->direction, ENEMY);
+    Bullet bullet(this->x, this->y, rand()%3+1, this->direction, ENEMY);
     game::bullets.push_back(bullet);
 }
 
@@ -231,7 +231,7 @@ void Enemy::fireBullet() {
 void Player::fireBullet() {
     if (this->ammunitions > 0) {
         this->ammunitions--;
-        Bullet bullet(this->x, this->y, rand()%3+1, this->direction, PLAYER);
+        Bullet bullet(this->x, this->y, this->bullet_speed, this->direction, PLAYER);
         game::bullets.push_back(bullet);
     }
 }
