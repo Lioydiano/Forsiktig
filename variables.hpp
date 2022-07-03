@@ -109,7 +109,7 @@ public:
     Enemy (int x_origin, int y_origin, int direction): Character(x_origin, y_origin, direction) {
         this->value = rand()%9+1;
         this->skin = std::to_string(this->value).c_str()[0];
-        this->bullet_speed = rand()%3+1;
+        this->bullet_speed = rand()%3+1; // random bullet speed
     }
 
     void movePlayer(char choice) {
@@ -117,15 +117,19 @@ public:
             case 'w': case 'W':
                 this->y--;
                 this->direction = NORTH;
+                break;
             case 'a': case 'A':
                 this->x--;
                 this->direction = WEST;
+                break;
             case 's': case 'S':
                 this->y++;
                 this->direction = SOUTH;
+                break;
             case 'd': case 'D':
                 this->x++;
                 this->direction = EAST;
+                break;
         }
 
         // TODO: check if the player is out of the screen
