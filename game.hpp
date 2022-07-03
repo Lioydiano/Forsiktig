@@ -13,7 +13,8 @@ namespace game {
 
 void moveAllBullets() {
     for (auto& bullet: game::bullets) {
-        bullet.move();
+        if (bullet.active)
+            bullet.move();
     }
 }
 
@@ -39,9 +40,11 @@ void updateField() {
     }
 
     // Insert bullets into the field
-    for (auto& bullet: bullets)
-        field[bullet.y][bullet.x] = direction_to_skin[bullet.direction];
-    
+    for (auto& bullet: bullets) {
+        if (bullet.active)
+            field[bullet.y][bullet.x] = direction_to_skin[bullet.direction];
+    }
+
     // Insert enemies into the field
     for (auto& enemy: enemies)
         field[enemy.y][enemy.x] = ENEMY_SKIN;

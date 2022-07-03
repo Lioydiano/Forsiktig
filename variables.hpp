@@ -16,13 +16,13 @@
 #define NORTH 'N'
 #define EAST 'E'
 #define WEST 'O'
-#define SUD 'S'
+#define SOUTH 'S'
 
 std::map<char, char> direction_to_skin = {
     {NORTH, BULLET_UP},
     {EAST, BULLET_RIGHT},
     {WEST, BULLET_LEFT},
-    {SUD, BULLET_DOWN}
+    {SOUTH, BULLET_DOWN}
 };
 
 // Speed constants
@@ -138,8 +138,8 @@ public:
     int points; // points counter
 
     Player(): Character(10, 10, NORTH) {
-        this->bullet_speed = MEDIUM;
-        this->ammunitions = 10;
+        this->bullet_speed = SLOW;
+        this->ammunitions = 100;
         this->points = 0;
     }
 
@@ -147,12 +147,16 @@ public:
         switch (choice) {
             case 'w': case 'W':
                 this->y--;
+                this->direction = NORTH;
             case 'a': case 'A':
                 this->x--;
+                this->direction = WEST;
             case 's': case 'S':
                 this->y++;
+                this->direction = SOUTH;
             case 'd': case 'D':
                 this->x++;
+                this->direction = EAST;
         }
 
         // TODO: check if the player is out of the screen
@@ -171,6 +175,7 @@ public:
     char direction; // direction of the bullet
     bool fired; // if the bullet was fired by the player or by the enemy
     // std::pair<int, int> last_position; // last position of the bullet
+    bool active; // if the bullet is active or not
 
     Bullet(int x_origin, int y_origin, int speed, int direction, bool fired) {
         this->x = x_origin;
@@ -179,6 +184,7 @@ public:
         this->direction = direction;
         this->fired = fired;
         // this->last_position = std::make_pair(this->x, this->y);
+        this->active = true;
     }
 
     void move() {
@@ -188,12 +194,14 @@ public:
             this->x += speed;
         } else if (direction == WEST) {
             this->x -= speed;
-        } else if (direction == SUD) {
+        } else if (direction == SOUTH) {
             this->y += speed;
         }
 
-        // TODO: check if the bullet hits the border of the screen
-        // TODO: check if the bullet hits an enemy
+        using namespace game;
+        // Check if the bullet hits the border of the screen
+        if (this->x < 0 || this->x > 19 || this->y < 0 || this->y > 19)
+            this->active = false;
     }
 };
 
