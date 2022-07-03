@@ -27,7 +27,6 @@ void updateField() {
         for (int j=0; j<enemies.size(); j++) {
             if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
                 enemies[j].value--;
-                player.points++;
                 player.ammunitions += enemies[j].value;
                 if (enemies[j].value == 0)
                     enemies.erase(enemies.begin() + j); // remove enemy
@@ -101,6 +100,8 @@ void mainloop() {
             }
             if (rand()%50 == 0)
                 game::random::addEnemy(rand()%18+1, rand()%18+1);
+
+            game::player.points++;
         }
         printField(); // print the field
 
