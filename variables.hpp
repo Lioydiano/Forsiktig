@@ -109,7 +109,6 @@ public:
     Enemy (int x_origin, int y_origin, int direction): Character(x_origin, y_origin, direction) {
         this->value = rand()%9+1;
         this->skin = std::to_string(this->value).c_str()[0];
-        this->bullet_speed = rand()%3+1; // random bullet speed
     }
 
     void movePlayer(char choice) {
@@ -232,7 +231,7 @@ void Enemy::fireBullet() {
 void Player::fireBullet() {
     if (this->ammunitions > 0) {
         this->ammunitions--;
-        Bullet bullet(this->x, this->y, this->bullet_speed, this->direction, PLAYER);
+        Bullet bullet(this->x, this->y, rand()%3+1, this->direction, PLAYER);
         game::bullets.push_back(bullet);
     }
 }
