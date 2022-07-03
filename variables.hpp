@@ -153,11 +153,13 @@ public:
 
     int ammunitions; // ammunitions counter
     int points; // points counter
+    bool auto_fire; // auto fire status
 
     Player(): Character(10, 10, NORTH) {
         this->bullet_speed = SLOW;
         this->ammunitions = 100;
         this->points = 0;
+        this->auto_fire = false;
     }
 
     void movePlayer(char choice) {

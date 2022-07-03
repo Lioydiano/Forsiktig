@@ -101,6 +101,8 @@ void mainloop() {
             if (rand()%50 == 0)
                 game::random::addEnemy(rand()%18+1, rand()%18+1);
 
+            if (game::player.auto_fire)
+                game::player.fireBullet();
             game::player.points++;
         }
         printField(); // print the field
@@ -120,8 +122,11 @@ void mainloop() {
                     game::player.movePlayer(choice);
                 break;
             case 'f': case 'F':
-                if (game::status == PLAYING)
+                if (game::status == PLAYING && game::player.ammunitions > 0 && !game::player.auto_fire)
                     game::player.fireBullet();
+                break;
+            case 'x': case 'X':
+                game::player.auto_fire = !game::player.auto_fire;
                 break;
         }
     }

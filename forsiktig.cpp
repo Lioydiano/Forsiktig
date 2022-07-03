@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
     std::cout << "- 'r' to resume <-- you also start the game resuming it\n";
     std::cout << "- 'w | a | s | d' to step\n";
     std::cout << "- 'f' to fire a bullet\n";
+    std::cout << "- 'x' to enable auto-strike\n";
     system("pause > nul");
 
     mainloop();
