@@ -64,6 +64,7 @@ void printField() {
 void mainloop() {
     char choice;
     game::emptyField();
+    printField();
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getch);
         while (input.wait_for(std::chrono::milliseconds(FRAME_DURATION)) != std::future_status::ready) {
@@ -74,6 +75,7 @@ void mainloop() {
             updateField(); // update the field
             printField(); // print the field
         }
+        printField(); // print the field
 
         choice = input.get();
         switch (choice) {
