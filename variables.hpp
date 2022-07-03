@@ -55,21 +55,6 @@ public:
         this->y = y_origin;
         this->direction = direction;
     }
-
-    void movePlayer(char choice) {
-        switch (choice) {
-            case 'w': case 'W':
-                this->y--;
-            case 'a': case 'A':
-                this->x--;
-            case 's': case 'S':
-                this->y++;
-            case 'd': case 'D':
-                this->x++;
-        }
-
-        // TODO: check if the player is out of the screen
-    }
 };
 
 class Bullet;
@@ -119,12 +104,36 @@ class Enemy: public Character {
 public:
 
     int value; // character value (an Enemy's skin will be its value)
-    char skin; // character skin (to avoid recalculating the skin every time)
+    char skin;
 
     Enemy (int x_origin, int y_origin, int direction): Character(x_origin, y_origin, direction) {
         this->value = rand()%9+1;
         this->skin = std::to_string(this->value).c_str()[0];
         this->bullet_speed = rand()%3+1;
+    }
+
+    void movePlayer(char choice) {
+        switch (choice) {
+            case 'w': case 'W':
+                this->y--;
+                this->direction = NORTH;
+            case 'a': case 'A':
+                this->x--;
+                this->direction = WEST;
+            case 's': case 'S':
+                this->y++;
+                this->direction = SOUTH;
+            case 'd': case 'D':
+                this->x++;
+                this->direction = EAST;
+        }
+
+        // TODO: check if the player is out of the screen
+    }
+
+    char getSkin() {
+        this->skin = std::to_string(this->value).c_str()[0];
+        return this->skin;
     }
 
     void fireBullet();
@@ -148,15 +157,19 @@ public:
             case 'w': case 'W':
                 this->y--;
                 this->direction = NORTH;
+                break;
             case 'a': case 'A':
                 this->x--;
                 this->direction = WEST;
+                break;
             case 's': case 'S':
                 this->y++;
                 this->direction = SOUTH;
+                break;
             case 'd': case 'D':
                 this->x++;
                 this->direction = EAST;
+                break;
         }
 
         // TODO: check if the player is out of the screen
