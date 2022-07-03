@@ -47,7 +47,7 @@ void updateField() {
 
     // Insert enemies into the field
     for (auto& enemy: enemies)
-        field[enemy.y][enemy.x] = ENEMY_SKIN;
+        field[enemy.y][enemy.x] = enemy.getSkin();
     
     // Insert player into the field
     field[player.y][player.x] = PLAYER_SKIN;
@@ -68,6 +68,7 @@ void mainloop() {
     char choice;
     game::emptyField();
     printField();
+    game::enemies.push_back(Enemy(2, 2, SOUTH));
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getch);
         while (input.wait_for(std::chrono::milliseconds(FRAME_DURATION)) != std::future_status::ready) {
