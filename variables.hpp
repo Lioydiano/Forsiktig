@@ -25,6 +25,7 @@ std::map<char, char> direction_to_skin = {
     {SOUTH, BULLET_DOWN}
 };
 char directional_constants[] = {NORTH, EAST, WEST, SOUTH};
+char directional_chars[] = {'w', 'd', 'a', 's'};
 
 // Speed constants
 #define SLOW 1
@@ -242,5 +243,22 @@ void Player::fireBullet() {
         this->ammunitions--;
         Bullet bullet(this->x, this->y, this->bullet_speed, this->direction, PLAYER);
         game::bullets.push_back(bullet);
+    }
+}
+
+
+namespace game {
+    namespace random {
+        char direction() {
+            return directional_constants[rand() % 4];
+        }
+
+        void addEnemy(int x, int y) {
+            game::enemies.push_back(Enemy(x, y, direction()));
+        }
+
+        char directionalChar() {
+            return directional_constants[rand() % 4];
+        }
     }
 }
