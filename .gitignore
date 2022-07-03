@@ -27,7 +27,7 @@
 *.lib
 
 # Executables
-*.exe
+# *.exe (why should I ignore my application?)
 *.out
 *.app
 
