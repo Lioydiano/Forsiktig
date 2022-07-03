@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <time.h>
 
 #include "variables.hpp"
 
@@ -65,10 +66,11 @@ void printField() {
 
 
 void mainloop() {
-    char choice;
+    srand(time(NULL));
     game::emptyField();
     printField();
     game::enemies.push_back(Enemy(2, 2, SOUTH));
+    char choice;
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getch);
         while (input.wait_for(std::chrono::milliseconds(FRAME_DURATION)) != std::future_status::ready) {
@@ -78,6 +80,9 @@ void mainloop() {
             moveAllBullets(); // move all bullets
             updateField(); // update the field
             printField(); // print the field
+
+            for (auto& enemy: game::enemies)
+                enemy.fireBullet();
         }
         printField(); // print the field
 
