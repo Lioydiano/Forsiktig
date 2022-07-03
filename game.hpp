@@ -28,10 +28,11 @@ void updateField() {
             if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
                 enemies[j].value--;
                 player.points++;
+                player.ammunitions+=10;
                 if (!enemies[j].value)
                     enemies.erase(enemies.begin() + j); // remove enemy
 
-                bullets.erase(bullets.begin() + i); // remove bullet from the vector
+                bullets[i].active = false; // remove bullet from the vector
                 i--;
                 break;
             }
@@ -69,7 +70,12 @@ void mainloop() {
     srand(time(NULL));
     game::emptyField();
     printField();
+
     game::enemies.push_back(Enemy(2, 2, SOUTH));
+    game::enemies.push_back(Enemy(18, 18, SOUTH));
+    game::enemies.push_back(Enemy(2, 18, SOUTH));
+    game::enemies.push_back(Enemy(18, 2, SOUTH));
+
     char choice;
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getch);
@@ -81,8 +87,10 @@ void mainloop() {
             updateField(); // update the field
             printField(); // print the field
 
-            for (auto& enemy: game::enemies)
+            for (auto& enemy: game::enemies) {
+                enemy.turn();
                 enemy.fireBullet();
+            }
         }
         printField(); // print the field
 
