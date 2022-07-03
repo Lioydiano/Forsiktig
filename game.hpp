@@ -28,8 +28,8 @@ void updateField() {
             if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
                 enemies[j].value--;
                 player.points++;
-                player.ammunitions+=10;
-                if (!enemies[j].value)
+                player.ammunitions += enemies[j].value;
+                if (enemies[j].value == 0)
                     enemies.erase(enemies.begin() + j); // remove enemy
 
                 bullets[i].active = false; // remove bullet from the vector
@@ -37,8 +37,10 @@ void updateField() {
                 break;
             }
         }
-        if (bullets[i].x == player.x && bullets[i].y == player.y && bullets[i].fired == ENEMY)
+        if (bullets[i].x == player.x && bullets[i].y == player.y && bullets[i].fired == ENEMY) {
+            std::cout << "You died!\n";
             exit(0); // game over
+        }
     }
 
     // Insert bullets into the field
@@ -63,6 +65,8 @@ void printField() {
             std::cout << game::field[i][j];
         std::cout << std::endl;
     }
+    std::cout << "Points: " << game::player.points << std::endl;
+    std::cout << "Ammunitions: " << game::player.ammunitions << std::endl;
 }
 
 
@@ -88,9 +92,15 @@ void mainloop() {
             printField(); // print the field
 
             for (auto& enemy: game::enemies) {
-                enemy.turn();
-                enemy.fireBullet();
+                if (rand()%3 == 0) {
+                    enemy.turn();
+                    enemy.fireBullet();
+                } else if (rand()%2 == 0) {
+                    enemy.movePlayer(game::random::directionalChar());
+                }
             }
+            if (rand()%50 == 0)
+                game::random::addEnemy(rand()%18+1, rand()%18+1);
         }
         printField(); // print the field
 
@@ -100,14 +110,18 @@ void mainloop() {
                 return;
             case 'p': case 'P':
                 game::status = PAUSED;
+                break;
             case 'r': case 'R':
                 game::status = PLAYING;
+                break;
             case 'w': case 'W': case 'a': case 'A': case 's': case 'S': case 'd': case 'D':
                 if (game::status == PLAYING)
                     game::player.movePlayer(choice);
+                break;
             case 'f': case 'F':
                 if (game::status == PLAYING)
                     game::player.fireBullet();
+                break;
         }
     }
 }
