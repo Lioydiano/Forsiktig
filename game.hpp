@@ -71,10 +71,10 @@ void mainloop() {
     game::emptyField();
     printField();
 
-    game::enemies.push_back(Enemy(2, 2, SOUTH));
-    game::enemies.push_back(Enemy(18, 18, SOUTH));
-    game::enemies.push_back(Enemy(2, 18, SOUTH));
-    game::enemies.push_back(Enemy(18, 2, SOUTH));
+    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
 
     char choice;
     while (choice != 'q') {
