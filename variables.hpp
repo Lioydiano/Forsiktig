@@ -24,6 +24,7 @@ std::map<char, char> direction_to_skin = {
     {WEST, BULLET_LEFT},
     {SOUTH, BULLET_DOWN}
 };
+char directional_constants[] = {NORTH, EAST, WEST, SOUTH};
 
 // Speed constants
 #define SLOW 1
@@ -140,6 +141,8 @@ public:
     }
 
     void fireBullet();
+
+    void turn();
 };
 
 
@@ -225,6 +228,12 @@ public:
 void Enemy::fireBullet() {
     Bullet bullet(this->x, this->y, rand()%3+1, this->direction, ENEMY);
     game::bullets.push_back(bullet);
+}
+
+
+void Enemy::turn() {
+    // As of now it's just a random turn, but it could be a smarter one
+    this->direction = directional_constants[rand()%4];
 }
 
 
