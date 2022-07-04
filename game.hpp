@@ -28,8 +28,24 @@ void printField() {
 }
 
 void moveAllBullets() {
+    for (int i=0; i<game::bullets.size(); i++) {
+        for (int j=0; j<game::bullets.size(); j++) {
+            if (i == j) continue;
+
+            if (game::bullets[i].x == game::bullets[j].x && game::bullets[i].y == game::bullets[j].y) {
+                game::bullets[i].active = false;
+                game::bullets[j].active = false;
+            }
+        }
+    }
+
+    for (int i=0; i<game::bullets.size(); i++) {
+        if (!game::bullets[i].active)
+            game::bullets.erase(game::bullets.begin() + i);
+    }
+
     for (auto& bullet: game::bullets) {
-        if (bullet.active)
+        if (bullet.active) // This control shouldn't be necessary but it's better to be safe than sorry
             bullet.move();
     }
 }
