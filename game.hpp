@@ -63,8 +63,8 @@ void updateField() {
     for (int i=0; i<bullets.size(); i++) {
         for (int j=0; j<enemies.size(); j++) {
             if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
-                enemies[j].value--;
                 player.ammunitions += enemies[j].value;
+                enemies[j].value--;
 
                 if (enemies[j].value == 0)
                     enemies[j].alive = false;
@@ -108,10 +108,8 @@ void mainloop() {
     game::emptyField();
     printField();
 
-    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
-    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
-    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
-    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    for (int i=0; i<4; i++)
+        game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
 
     char choice;
     while (choice != 'q') {
