@@ -60,7 +60,7 @@ void updateField() {
 void printField() {
     system("cls");
     for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < 50; j++)
             std::cout << game::field[i][j];
         std::cout << std::endl;
     }
@@ -74,10 +74,10 @@ void mainloop() {
     game::emptyField();
     printField();
 
-    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
-    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
-    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
-    game::enemies.push_back(Enemy(rand()%18+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
 
     char choice;
     while (choice != 'q') {
@@ -99,7 +99,7 @@ void mainloop() {
                 }
             }
             if (rand()%50 == 0)
-                game::random::addEnemy(rand()%18+1, rand()%18+1);
+                game::random::addEnemy(rand()%48+1, rand()%18+1);
 
             if (game::player.auto_fire)
                 game::player.fireBullet();
