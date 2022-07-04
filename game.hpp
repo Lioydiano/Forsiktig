@@ -18,8 +18,13 @@ void printField() {
             std::cout << game::field[i][j];
         std::cout << std::endl;
     }
-    std::cout << "Points: " << game::player.points << std::endl;
-    std::cout << "Ammunitions: " << game::player.ammunitions << std::endl;
+
+    int sum = 0;
+    for (auto& enemy : game::enemies)
+        sum += enemy.alive;
+
+    std::cout << "POINTS" << TEN_SPACES << "ENEMIES" << TEN_SPACES << "AMMUNITIONS" << std::endl;
+    std::cout << "  " << game::player.points << SEVENTEEN_SPACES << sum << SEVENTEEN_SPACES << game::player.ammunitions << std::endl;
 }
 
 void moveAllBullets() {
@@ -34,16 +39,23 @@ void updateField() {
     bool died = false;
     emptyField();
 
+    for (int i=0; i<enemies.size(); i++) {
+        if (!enemies[i].alive)
+            enemies.erase(enemies.begin() + i); // remove enemy
+    }
+
     for (int i=0; i<bullets.size(); i++) {
         for (int j=0; j<enemies.size(); j++) {
             if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
                 enemies[j].value--;
                 player.ammunitions += enemies[j].value;
-                if (enemies[j].value == 0)
-                    enemies.erase(enemies.begin() + j); // remove enemy
 
-                bullets[i].active = false; // remove bullet from the vector
-                i--;
+                if (enemies[j].value == 0)
+                    enemies[j].alive = false;
+
+                bullets[i].active = false;
+                bullets.erase(bullets.begin() + i); // remove bullet from the vector
+                // i--;    <-- THE WHOLE ERROR WAS HERE!
                 break;
             }
         }
@@ -58,8 +70,9 @@ void updateField() {
     }
 
     // Insert enemies into the field
-    for (auto& enemy: enemies)
+    for (auto& enemy: enemies) {
         field[enemy.y][enemy.x] = enemy.getSkin();
+    }
 
     if (died) {
         // Insert dead player into the field
@@ -95,7 +108,9 @@ void mainloop() {
             printField(); // print the field
 
             for (auto& enemy: game::enemies) {
-                if (rand()%3 == 0) {
+                if (!enemy.alive)
+                    continue;
+                if (rand()%5 == 0) {
                     enemy.turn();
                     enemy.fireBullet();
                 } else if (rand()%2 == 0) {

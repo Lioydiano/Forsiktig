@@ -45,6 +45,10 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PLAYER true
 #define ENEMY false
 
+// Others
+#define SPACE_CHAR ' '
+#define TEN_SPACES "          "
+#define SEVENTEEN_SPACES "               "
 
 class Character {
 public:
@@ -143,14 +147,19 @@ public:
 
     int value; // character value (an Enemy's skin will be its value)
     char skin;
+    bool alive; // is the enemy alive?
 
     Enemy (int x_origin, int y_origin, int direction): Character(x_origin, y_origin, direction) {
         this->value = rand()%9+1;
         this->skin = std::to_string(this->value).c_str()[0];
+        this->alive = true;
     }
 
     char getSkin() {
-        this->skin = std::to_string(this->value).c_str()[0];
+        if (!this->alive)
+            this->skin = DIED_SKIN;
+        else
+            this->skin = std::to_string(this->value).c_str()[0];
         return this->skin;
     }
 
