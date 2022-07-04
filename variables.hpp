@@ -85,14 +85,14 @@ public:
         }
 
         // Check if the player is out of the screen
-        if (this->x <= 1 || this->x >= 48 || this->y <= 1 || this->y >= 18) {
-            if (this->x <= 1 && this->direction == WEST) {
+        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
+            if (this->x <= 0 && this->direction == WEST) {
                 this->x = 48;
-            } else if (this->x >= 48 && this->direction == EAST) {
+            } else if (this->x >= 49 && this->direction == EAST) {
                 this->x = 1;
-            } else if (this->y <= 1 && this->direction == NORTH) {
+            } else if (this->y <= 0 && this->direction == NORTH) {
                 this->y = 18;
-            } else if (this->y >= 18 && this->direction == SOUTH) {
+            } else if (this->y >= 19 && this->direction == SOUTH) {
                 this->y = 1;
             }
         }
@@ -221,7 +221,7 @@ public:
 
         using namespace game;
         // Check if the bullet hits the border of the screen
-        if (this->x < 0 || this->x > 49 || this->y < 0 || this->y > 19)
+        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19)
             this->active = false;
     }
 };
