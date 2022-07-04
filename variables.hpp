@@ -58,6 +58,40 @@ public:
         this->y = y_origin;
         this->direction = direction;
     }
+
+    void movePlayer(char choice) {
+        switch (choice) {
+            case 'w': case 'W':
+                this->y--;
+                this->direction = NORTH;
+                break;
+            case 'a': case 'A':
+                this->x--;
+                this->direction = WEST;
+                break;
+            case 's': case 'S':
+                this->y++;
+                this->direction = SOUTH;
+                break;
+            case 'd': case 'D':
+                this->x++;
+                this->direction = EAST;
+                break;
+        }
+
+        // Check if the player is out of the screen
+        if (this->x <= 1 || this->x >= 48 || this->y <= 1 || this->y >= 18) {
+            if (this->x <= 1 && this->direction == WEST) {
+                this->x = 48;
+            } else if (this->x >= 48 && this->direction == EAST) {
+                this->x = 1;
+            } else if (this->y <= 1 && this->direction == NORTH) {
+                this->y = 18;
+            } else if (this->y >= 18 && this->direction == SOUTH) {
+                this->y = 1;
+            }
+        }
+    }
 };
 
 class Bullet;
@@ -114,29 +148,6 @@ public:
         this->skin = std::to_string(this->value).c_str()[0];
     }
 
-    void movePlayer(char choice) {
-        switch (choice) {
-            case 'w': case 'W':
-                this->y--;
-                this->direction = NORTH;
-                break;
-            case 'a': case 'A':
-                this->x--;
-                this->direction = WEST;
-                break;
-            case 's': case 'S':
-                this->y++;
-                this->direction = SOUTH;
-                break;
-            case 'd': case 'D':
-                this->x++;
-                this->direction = EAST;
-                break;
-        }
-
-        // TODO: check if the player is out of the screen
-    }
-
     char getSkin() {
         this->skin = std::to_string(this->value).c_str()[0];
         return this->skin;
@@ -160,29 +171,6 @@ public:
         this->ammunitions = 100;
         this->points = 0;
         this->auto_fire = false;
-    }
-
-    void movePlayer(char choice) {
-        switch (choice) {
-            case 'w': case 'W':
-                this->y--;
-                this->direction = NORTH;
-                break;
-            case 'a': case 'A':
-                this->x--;
-                this->direction = WEST;
-                break;
-            case 's': case 'S':
-                this->y++;
-                this->direction = SOUTH;
-                break;
-            case 'd': case 'D':
-                this->x++;
-                this->direction = EAST;
-                break;
-        }
-
-        // TODO: check if the player is out of the screen
     }
 
     void fireBullet();
