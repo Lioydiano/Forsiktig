@@ -95,6 +95,7 @@ void updateField() {
         field[player.y][player.x] = DIED_SKIN;
         printField();
         std::cout << "You died!\n";
+        std::cin.get(); // Prevent Window from closing
         exit(0); // exit the game
     }
 
