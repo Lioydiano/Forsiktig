@@ -25,5 +25,6 @@ int main(int argc, char* argv[]) {
 
     mainloop();
 
+    system("pause > nul");
     return 0;
 }
