@@ -18,7 +18,9 @@ int main(int argc, char* argv[]) {
     std::cout << "- 'r' to resume <-- you also start the game resuming it\n";
     std::cout << "- 'w | a | s | d' to step\n";
     std::cout << "- 'f' to fire a bullet\n";
-    std::cout << "- 'x' to enable auto-strike\n";
+    std::cout << "- 'x' to enable/disable auto-strike\n\n";
+    std::cout << "Digits from 1 to 9 are your enemies, while you're a $\n";
+    std::cout << "Avoid bullets fired from enemies, and shoot them to get ammunitions\n";
     system("pause > nul");
 
     mainloop();
