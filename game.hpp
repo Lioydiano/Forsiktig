@@ -11,6 +11,16 @@ namespace game {
     Player player; // player
 };
 
+void printField() {
+    system("cls");
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 50; j++)
+            std::cout << game::field[i][j];
+        std::cout << std::endl;
+    }
+    std::cout << "Points: " << game::player.points << std::endl;
+    std::cout << "Ammunitions: " << game::player.ammunitions << std::endl;
+}
 
 void moveAllBullets() {
     for (auto& bullet: game::bullets) {
@@ -21,6 +31,7 @@ void moveAllBullets() {
 
 void updateField() {
     using namespace game; // This should be automatically unused after the scope dies
+    bool died = false;
     emptyField();
 
     for (int i=0; i<bullets.size(); i++) {
@@ -36,10 +47,8 @@ void updateField() {
                 break;
             }
         }
-        if (bullets[i].x == player.x && bullets[i].y == player.y && bullets[i].fired == ENEMY) {
-            std::cout << "You died!\n";
-            exit(0); // game over
-        }
+        if (bullets[i].x == player.x && bullets[i].y == player.y && bullets[i].fired == ENEMY)
+            died = true;
     }
 
     // Insert bullets into the field
@@ -51,23 +60,18 @@ void updateField() {
     // Insert enemies into the field
     for (auto& enemy: enemies)
         field[enemy.y][enemy.x] = enemy.getSkin();
-    
+
+    if (died) {
+        // Insert dead player into the field
+        field[player.y][player.x] = DIED_SKIN;
+        printField();
+        std::cout << "You died!\n";
+        exit(0); // exit the game
+    }
+
     // Insert player into the field
     field[player.y][player.x] = PLAYER_SKIN;
 }
-
-
-void printField() {
-    system("cls");
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 50; j++)
-            std::cout << game::field[i][j];
-        std::cout << std::endl;
-    }
-    std::cout << "Points: " << game::player.points << std::endl;
-    std::cout << "Ammunitions: " << game::player.ammunitions << std::endl;
-}
-
 
 void mainloop() {
     srand(time(NULL));

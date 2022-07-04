@@ -8,6 +8,7 @@
 // Characters constants
 #define PLAYER_SKIN '$'
 #define ENEMY_SKIN '&'
+#define DIED_SKIN '@'
 #define BULLET_UP '^'
 #define BULLET_DOWN 'v'
 #define BULLET_RIGHT '>'
