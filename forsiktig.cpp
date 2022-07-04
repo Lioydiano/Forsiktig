@@ -25,6 +25,6 @@ int main(int argc, char* argv[]) {
 
     mainloop();
 
-    system("pause > nul");
+    std::cin.get(); // Prevent Window from closing
     return 0;
 }
