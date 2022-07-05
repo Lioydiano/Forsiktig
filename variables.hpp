@@ -45,6 +45,19 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PLAYER true
 #define ENEMY false
 
+// getch() constants
+#define BEFORE_KEY_UP '{'
+#define BEFORE_KEY_DOWN '|'
+#define BEFORE_KEY_RIGHT '}'
+#define BEFORE_KEY_LEFT '~'
+
+#define AFTER_KEY_UP 'A'
+#define AFTER_KEY_DOWN 'B'
+#define AFTER_KEY_RIGHT 'C'
+#define AFTER_KEY_LEFT 'D'
+
+#define KEY_ESC '\033'
+
 // Others
 #define SPACE_CHAR ' '
 #define TEN_SPACES "          "
@@ -175,15 +188,19 @@ public:
     int ammunitions; // ammunitions counter
     int points; // points counter
     bool auto_fire; // auto fire status
+    int fire_direction; // fire direction
 
     Player(): Character(10, 10, NORTH) {
         this->bullet_speed = SLOW;
         this->ammunitions = 100;
         this->points = 0;
         this->auto_fire = false;
+        this->fire_direction = NORTH;
     }
 
     void fireBullet();
+
+    void changeFireDirection(int direction);
 };
 
 
@@ -242,8 +259,26 @@ void Enemy::turn() {
 void Player::fireBullet() {
     if (this->ammunitions > 0) {
         this->ammunitions--;
-        Bullet bullet(this->x, this->y, this->bullet_speed, this->direction, PLAYER);
+        Bullet bullet(this->x, this->y, this->bullet_speed, this->fire_direction, PLAYER);
         game::bullets.push_back(bullet);
+    }
+}
+
+
+void Player::changeFireDirection(int direction) {
+    switch (direction) {
+        case BEFORE_KEY_UP:
+            this->fire_direction = NORTH;
+            break;
+        case BEFORE_KEY_RIGHT:
+            this->fire_direction = EAST;
+            break;
+        case BEFORE_KEY_LEFT:
+            this->fire_direction = WEST;
+            break;
+        case BEFORE_KEY_DOWN:
+            this->fire_direction = SOUTH;
+            break;
     }
 }
 
