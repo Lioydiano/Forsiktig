@@ -103,6 +103,26 @@ void updateField() {
     field[player.y][player.x] = PLAYER_SKIN;
 }
 
+
+char getCharOrArrow() {
+    char c = getch();
+    if (c == KEY_ESC) { // Skip the 224 prefix
+        switch (getch()) {
+            case AFTER_KEY_UP:
+                return BEFORE_KEY_UP;
+            case AFTER_KEY_DOWN:
+                return BEFORE_KEY_DOWN;
+            case AFTER_KEY_LEFT:
+                return BEFORE_KEY_LEFT;
+            case AFTER_KEY_RIGHT:
+                return BEFORE_KEY_RIGHT;
+        }
+    } else {
+        return c;
+    }
+}
+
+
 void mainloop() {
     srand(time(NULL));
     game::emptyField();
@@ -113,7 +133,7 @@ void mainloop() {
 
     char choice;
     while (choice != 'q') {
-        auto input = std::async(std::launch::async, getch);
+        auto input = std::async(std::launch::async, getCharOrArrow);
         while (input.wait_for(std::chrono::milliseconds(FRAME_DURATION)) != std::future_status::ready) {
             if (game::status == PAUSED) // if the game is paused, do nothing
                 continue; // just wait for the next char
@@ -155,7 +175,8 @@ void mainloop() {
                 if (game::status == PLAYING)
                     game::player.movePlayer(choice);
                 break;
-            case 'f': case 'F':
+            case BEFORE_KEY_UP: case BEFORE_KEY_DOWN: case BEFORE_KEY_LEFT: case BEFORE_KEY_RIGHT:
+                game::player.changeFireDirection(choice);
                 if (game::status == PLAYING && game::player.ammunitions > 0 && !game::player.auto_fire)
                     game::player.fireBullet();
                 break;
