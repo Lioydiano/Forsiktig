@@ -106,8 +106,7 @@ void updateField() {
 
 char getCharOrArrow() {
     char c = getch();
-    if (c == KEY_ESC) { // Skip the \033
-        getch(); // Skip the [
+    if (c == KEY_ESC) { // Skip the 224 prefix
         switch (getch()) {
             case AFTER_KEY_UP:
                 return BEFORE_KEY_UP;
