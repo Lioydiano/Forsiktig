@@ -51,12 +51,12 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define BEFORE_KEY_RIGHT '}'
 #define BEFORE_KEY_LEFT '~'
 
-#define AFTER_KEY_UP 'A'
-#define AFTER_KEY_DOWN 'B'
-#define AFTER_KEY_RIGHT 'C'
-#define AFTER_KEY_LEFT 'D'
+#define AFTER_KEY_UP 72
+#define AFTER_KEY_DOWN 80
+#define AFTER_KEY_RIGHT 77
+#define AFTER_KEY_LEFT 75
 
-#define KEY_ESC '\033'
+#define KEY_ESC -32 // This isn't ESC, but the prefix for the arrow keys
 
 // Others
 #define SPACE_CHAR ' '
