@@ -62,6 +62,7 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define SPACE_CHAR ' '
 #define TEN_SPACES "          "
 #define SEVENTEEN_SPACES "               "
+#define CLS "\33[2J\33[H"
 
 class Character {
 public:
@@ -206,7 +207,7 @@ namespace game {
 
             std::cout << "Configuration loaded" << std::endl;
             system("pause > nul");
-            system("cls");
+            std::cout << CLS;
             std::cout << "Frame duration: " << game::frame_duration << std::endl;
             std::cout << "Starting ammunitions: " << game::starting_ammunitions << std::endl;
             std::cout << "Starting enemies: " << game::starting_enemies << std::endl << std::endl;
@@ -218,7 +219,7 @@ namespace game {
             }
 
             system("pause > nul");
-            system("cls");
+            std::cout << CLS;
             std::cout << "\nPress any key to start the game." << std::endl;
             system("pause > nul");
         }

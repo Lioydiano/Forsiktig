@@ -11,7 +11,7 @@ namespace game {
 };
 
 void printField() {
-    system("cls");
+    std::cout << CLS;
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++)
             std::cout << game::field[i][j];
@@ -123,15 +123,15 @@ char getCharOrArrow() {
 
 void mainloop() {
     // Configure the game
-    system("cls");
+    std::cout << CLS;
     std::cout << "Do you want to configure the game? (y/n)\n> ";
     char c = getch();
-    system("cls");
+    std::cout << CLS;
     switch (c) {
         case 'y': case 'Y':
             std::cout << "Do you want to load the settings? (y/n)\n> ";
             c = getch();
-            system("cls");
+            std::cout << CLS;
             switch (c) {
                 case 'y': case 'Y': {
                     auto settings = loadSettings();
@@ -140,7 +140,7 @@ void mainloop() {
                     game::starting_ammunitions = std::get<2>(settings);
                     std::cout << "Settings loaded!\n";
                     system("pause > nul");
-                    system("cls");
+                    std::cout << CLS;
                 }
                     break;
                 default:
