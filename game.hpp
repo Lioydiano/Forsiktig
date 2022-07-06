@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "variables.hpp"
+#include "settings.hpp"
 
 
 namespace game {
@@ -117,9 +118,8 @@ char getCharOrArrow() {
             case AFTER_KEY_RIGHT:
                 return BEFORE_KEY_RIGHT;
         }
-    } else {
-        return c;
     }
+    return c; // This one could be in an else branch but it triggers g++ warnings
 }
 
 
@@ -131,7 +131,24 @@ void mainloop() {
     system("cls");
     switch (c) {
         case 'y': case 'Y':
-            game::configure(false);
+            std::cout << "Do you want to load the settings? (y/n)\n> ";
+            c = getch();
+            system("cls");
+            switch (c) {
+                case 'y': case 'Y': {
+                    auto settings = loadSettings();
+                    game::frame_duration = std::get<0>(settings);
+                    game::starting_enemies = std::get<1>(settings);
+                    game::starting_ammunitions = std::get<2>(settings);
+                    std::cout << "Settings loaded!\n";
+                    system("pause > nul");
+                    system("cls");
+                }
+                    break;
+                default:
+                    game::configure(false);
+                    break;
+            }
             break;
         default:
             game::configure(true);
