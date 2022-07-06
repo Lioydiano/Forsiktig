@@ -62,6 +62,7 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define SPACE_CHAR ' '
 #define TEN_SPACES "          "
 #define SEVENTEEN_SPACES "               "
+#define CLS "\33[2J\33[H"
 
 class Character {
 public:
@@ -153,8 +154,8 @@ namespace game {
         }
     }
 
-    std::vector<Bullet> bullets; // bullets vector
-    std::vector<Enemy> enemies; // enemies vector
+    std::vector<Bullet> bullets;
+    std::vector<Enemy> enemies;
 
 
     void configure(bool standard) {
@@ -206,7 +207,7 @@ namespace game {
 
             std::cout << "Configuration loaded" << std::endl;
             system("pause > nul");
-            system("cls");
+            std::cout << CLS;
             std::cout << "Frame duration: " << game::frame_duration << std::endl;
             std::cout << "Starting ammunitions: " << game::starting_ammunitions << std::endl;
             std::cout << "Starting enemies: " << game::starting_enemies << std::endl << std::endl;
@@ -218,7 +219,7 @@ namespace game {
             }
 
             system("pause > nul");
-            system("cls");
+            std::cout << CLS;
             std::cout << "\nPress any key to start the game." << std::endl;
             system("pause > nul");
         }
@@ -283,7 +284,6 @@ public:
     int speed; // speed of the bullet
     char direction; // direction of the bullet
     bool fired; // if the bullet was fired by the player or by the enemy
-    // std::pair<int, int> last_position; // last position of the bullet
     bool active; // if the bullet is active or not
 
     Bullet(int x_origin, int y_origin, int speed, int direction, bool fired) {
@@ -292,7 +292,6 @@ public:
         this->speed = speed;
         this->direction = direction;
         this->fired = fired;
-        // this->last_position = std::make_pair(this->x, this->y);
         this->active = true;
     }
 
