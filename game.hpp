@@ -153,6 +153,7 @@ void mainloop() {
     }
 
     srand(time(NULL));
+    std::ios_base::sync_with_stdio(false);
     game::emptyField();
     printField();
 
