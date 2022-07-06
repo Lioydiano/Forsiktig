@@ -65,7 +65,7 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
     } while (choice > lines);
 
     #if DEBUG
-        std::cout << "Setting chosen: " << choice << std::endl;
+        file_out << "Setting chosen: " << choice << std::endl;
     #endif
 
 
