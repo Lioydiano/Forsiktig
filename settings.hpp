@@ -53,3 +53,9 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
 
     return settings[choice-1];
 }
+
+
+void saveSettings(std::tuple<unsigned int, unsigned int, unsigned int> settings_) {
+    std::ofstream file(SETTINGS_PATH, std::ios::app);
+    file << std::get<0>(settings_) << std::get<1>(settings_) << std::get<2>(settings_) << std::endl;
+}
