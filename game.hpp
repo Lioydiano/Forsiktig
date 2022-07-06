@@ -15,7 +15,7 @@ void printField() {
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++)
             std::cout << game::field[i][j];
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 
     int sum = 0;
