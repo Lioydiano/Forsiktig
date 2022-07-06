@@ -3,6 +3,9 @@
 #include <map>
 #include <string>
 #include <cstring>
+#include <conio.h>
+
+#include "settings.hpp"
 
 
 // Characters constants
@@ -206,7 +209,16 @@ namespace game {
             system("cls");
             std::cout << "Frame duration: " << game::frame_duration << std::endl;
             std::cout << "Starting ammunitions: " << game::starting_ammunitions << std::endl;
-            std::cout << "Starting enemies: " << game::starting_enemies << std::endl;
+            std::cout << "Starting enemies: " << game::starting_enemies << std::endl << std::endl;
+            std::cout << "Do you want to save the configuration? (y/n)\n> ";
+            char answer = getch();
+            switch (answer) {
+                case 'y': case 'Y':
+                    saveSettings(std::make_tuple(game::frame_duration, game::starting_enemies, game::starting_ammunitions));
+            }
+
+            system("pause > nul");
+            system("cls");
             std::cout << "\nPress any key to start the game." << std::endl;
             system("pause > nul");
         }

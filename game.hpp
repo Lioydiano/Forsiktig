@@ -1,11 +1,9 @@
-#include <conio.h>
 #include <chrono>
 #include <thread>
 #include <future>
 #include <time.h>
 
 #include "variables.hpp"
-#include "settings.hpp"
 
 
 namespace game {

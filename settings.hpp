@@ -41,8 +41,8 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
         // Print
         std::cout << i+1 << ")" << std::endl;
         std::cout << "Frame duration: " << std::get<0>(settings[i]) << std::endl;
-        std::cout << "Starting enemies: " << std::get<1>(settings[i]) << std::endl;
-        std::cout << "Starting ammunitions: " << std::get<2>(settings[i]) << std::endl << std::endl;
+        std::cout << "Starting ammunitions: " << std::get<2>(settings[i]) << std::endl;
+        std::cout << "Starting enemies: " << std::get<1>(settings[i]) << std::endl << std::endl;
     }
 
     unsigned int choice;
@@ -57,5 +57,6 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
 
 void saveSettings(std::tuple<unsigned int, unsigned int, unsigned int> settings_) {
     std::ofstream file(SETTINGS_PATH, std::ios::app);
-    file << std::get<0>(settings_) << std::get<1>(settings_) << std::get<2>(settings_) << std::endl;
+    file << std::get<0>(settings_) << ' ' << std::get<1>(settings_) << ' ' << std::get<2>(settings_) << std::endl;
+    std::cout << "Settings saved!" << std::endl;
 }
