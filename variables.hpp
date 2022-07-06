@@ -154,8 +154,8 @@ namespace game {
         }
     }
 
-    std::vector<Bullet> bullets; // bullets vector
-    std::vector<Enemy> enemies; // enemies vector
+    std::vector<Bullet> bullets;
+    std::vector<Enemy> enemies;
 
 
     void configure(bool standard) {
@@ -284,7 +284,6 @@ public:
     int speed; // speed of the bullet
     char direction; // direction of the bullet
     bool fired; // if the bullet was fired by the player or by the enemy
-    // std::pair<int, int> last_position; // last position of the bullet
     bool active; // if the bullet is active or not
 
     Bullet(int x_origin, int y_origin, int speed, int direction, bool fired) {
@@ -293,7 +292,6 @@ public:
         this->speed = speed;
         this->direction = direction;
         this->fired = fired;
-        // this->last_position = std::make_pair(this->x, this->y);
         this->active = true;
     }
 

@@ -7,7 +7,7 @@
 
 
 namespace game {
-    Player player; // player
+    Player player;
 };
 
 void printField() {
@@ -70,7 +70,6 @@ void updateField() {
 
                 bullets[i].active = false;
                 bullets.erase(bullets.begin() + i); // remove bullet from the vector
-                // i--;    <-- THE WHOLE ERROR WAS HERE!
                 break;
             }
         }
@@ -94,7 +93,7 @@ void updateField() {
         field[player.y][player.x] = DIED_SKIN;
         printField();
         std::cout << "You died!\n";
-        std::cin.get(); // Prevent Window from closing
+        system("pause > nul"); // Prevent Window from closing
         exit(0); // exit the game
     }
 
@@ -165,12 +164,12 @@ void mainloop() {
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getCharOrArrow);
         while (input.wait_for(std::chrono::milliseconds(game::frame_duration)) != std::future_status::ready) {
-            if (game::status == PAUSED) // if the game is paused, do nothing
-                continue; // just wait for the next char
+            if (game::status == PAUSED)
+                continue;
             
-            moveAllBullets(); // move all bullets
-            updateField(); // update the field
-            printField(); // print the field
+            moveAllBullets();
+            updateField();
+            printField();
 
             for (auto& enemy: game::enemies) {
                 if (!enemy.alive)
@@ -189,7 +188,7 @@ void mainloop() {
                 game::player.fireBullet();
             game::player.points++;
         }
-        printField(); // print the field
+        printField();
 
         choice = input.get();
         switch (choice) {
