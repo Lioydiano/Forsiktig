@@ -5,7 +5,7 @@
 #include <vector>
 
 #define SETTINGS_PATH "C://Forsiktig/settings.txt"
-#define DEBUG 1
+#define DEBUG 0
 
 #define DEFAULT_FRAME_DURATION 100
 #define DEFAULT_STARTING_ENEMIES 4
@@ -32,19 +32,9 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
     }
     unsigned int lines = countLines(SETTINGS_PATH);
     // frame duration, starting enemies, starting ammunitions
-    std::vector<std::tuple<unsigned int, unsigned int, unsigned int>> settings;
-
-    #if DEBUG
-        std::ofstream file_out("D:/C++/Forsiktig/debug.txt", std::ios::out);
-        file_out << "Lines: " << lines << std::endl;
-    #endif
+    std::vector<std::tuple<unsigned int, unsigned int, unsigned int>> settings(lines);
 
     for (int i=0; i<lines; i++) {
-        #if DEBUG
-            file_out << "Line " << i << ": ";
-            system("pause > nul");
-        #endif
-
         // Read
         file >> std::get<0>(settings[i]) >> std::get<1>(settings[i]) >> std::get<2>(settings[i]);
 
@@ -54,20 +44,12 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
         std::cout << "Starting enemies: " << std::get<1>(settings[i]) << std::endl;
         std::cout << "Starting ammunitions: " << std::get<2>(settings[i]) << std::endl << std::endl;
     }
-    #if DEBUG
-        file_out << "Settings printed!\n" << std::endl;
-    #endif
 
     unsigned int choice;
     do {
         std::cout << "Choose a setting (1-" << lines << "): ";
         std::cin >> choice;
     } while (choice > lines);
-
-    #if DEBUG
-        file_out << "Setting chosen: " << choice << std::endl;
-    #endif
-
 
     return settings[choice-1];
 }
