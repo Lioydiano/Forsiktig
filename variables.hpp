@@ -38,9 +38,6 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PLAYING true
 #define PAUSED false
 
-// Duration constants
-#define FRAME_DURATION 100
-
 // Fired bullet constants
 #define PLAYER true
 #define ENEMY false
@@ -117,6 +114,9 @@ class Enemy;
 class Player;
 
 namespace game {
+    unsigned int starting_enemies;
+    unsigned int starting_ammunitions;
+    unsigned int frame_duration; // duration of each frame in milliseconds
     bool status; // game status (PLAYING or PAUSED)
 
     char field[20][50] = {' '}; // game field
@@ -152,6 +152,65 @@ namespace game {
 
     std::vector<Bullet> bullets; // bullets vector
     std::vector<Enemy> enemies; // enemies vector
+
+
+    void configure(bool standard) {
+        if (standard) {
+            game::frame_duration = 100;
+            game::starting_ammunitions = 100;
+            game::starting_enemies = 4;
+            std::cout << "Standard configuration loaded" << std::endl;
+            system("pause > nul");
+        } else {
+            std::cout << "Frame duration [unsigned int] (ms): ";
+            while (!(std::cin >> game::frame_duration)) {
+                std::cout << "Invalid input. Try again.\n";
+                std::cout << "Frame duration [unsigned int] (ms): ";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+            if (game::frame_duration < 50) {
+                std::cout << "Frame duration too low. Setting to 50.\n";
+                game::frame_duration = 50;
+            } else if (game::frame_duration > 500) {
+                std::cout << "Frame duration too high. Setting to 500.\n";
+                game::frame_duration = 500;
+            }
+
+            std::cout << "Starting ammunitions [unsigned int]: ";
+            while (!(std::cin >> game::starting_ammunitions)) {
+                std::cout << "Invalid input. Try again.\n";
+                std::cout << "Starting ammunitions [unsigned int]: ";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+            if (game::starting_ammunitions < 1) {
+                std::cout << "Did you want to start without ammunitions? Setting to 1.\n";
+                game::starting_ammunitions = 1;
+            }
+
+            std::cout << "Starting enemies [unsigned int]: ";
+            while (!(std::cin >> game::starting_enemies)) {
+                std::cout << "Invalid input. Try again.\n";
+                std::cout << "Starting enemies [unsigned int]: ";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+            if (game::starting_enemies > 20) {
+                std::cout << "Not enough space for everyone in the space! Setting to 50.\n";
+                game::starting_enemies = 50;
+            }
+
+            std::cout << "Configuration loaded" << std::endl;
+            system("pause > nul");
+            system("cls");
+            std::cout << "Frame duration: " << game::frame_duration << std::endl;
+            std::cout << "Starting ammunitions: " << game::starting_ammunitions << std::endl;
+            std::cout << "Starting enemies: " << game::starting_enemies << std::endl;
+            std::cout << "\nPress any key to start the game." << std::endl;
+            system("pause > nul");
+        }
+    }
 };
 
 

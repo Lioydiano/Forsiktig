@@ -124,17 +124,32 @@ char getCharOrArrow() {
 
 
 void mainloop() {
+    // Configure the game
+    system("cls");
+    std::cout << "Do you want to configure the game? (y/n)\n> ";
+    char c = getch();
+    system("cls");
+    switch (c) {
+        case 'y': case 'Y':
+            game::configure(false);
+            break;
+        default:
+            game::configure(true);
+            break;
+    }
+
     srand(time(NULL));
     game::emptyField();
     printField();
 
-    for (int i=0; i<4; i++)
+    for (int i=0; i<game::starting_enemies; i++)
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    game::player.ammunitions = game::starting_ammunitions;
 
     char choice;
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getCharOrArrow);
-        while (input.wait_for(std::chrono::milliseconds(FRAME_DURATION)) != std::future_status::ready) {
+        while (input.wait_for(std::chrono::milliseconds(game::frame_duration)) != std::future_status::ready) {
             if (game::status == PAUSED) // if the game is paused, do nothing
                 continue; // just wait for the next char
             
