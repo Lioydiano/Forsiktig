@@ -56,6 +56,16 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
 
 
 void saveSettings(std::tuple<unsigned int, unsigned int, unsigned int> settings_) {
+    std::ifstream in_file(SETTINGS_PATH, std::ios::in);
+    unsigned int lines = countLines(SETTINGS_PATH);
+    unsigned int frame_duration, starting_enemies, starting_ammunitions;
+    for (int i=0; i<lines; i++) {
+        in_file >> frame_duration >> starting_enemies >> starting_ammunitions;
+        if (std::get<0>(settings_) == frame_duration && std::get<1>(settings_) == starting_enemies && std::get<2>(settings_) == starting_ammunitions) {
+            std::cout << "Settings already saved!" << std::endl;
+            return;
+        }
+    }
     std::ofstream file(SETTINGS_PATH, std::ios::app);
     file << std::get<0>(settings_) << ' ' << std::get<1>(settings_) << ' ' << std::get<2>(settings_) << std::endl;
     std::cout << "Settings saved!" << std::endl;
