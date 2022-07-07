@@ -93,7 +93,7 @@ void updateField() {
         field[player.y][player.x] = DIED_SKIN;
         printField();
         std::cout << "You died!\n";
-        system("pause > nul"); // Prevent Window from closing
+        getch(); // Prevent Window from closing
         exit(0); // exit the game
     }
 
@@ -138,7 +138,7 @@ void mainloop() {
                     game::starting_enemies = std::get<1>(settings);
                     game::starting_ammunitions = std::get<2>(settings);
                     std::cout << "Settings loaded!\n";
-                    system("pause > nul");
+                    getch();
                     std::cout << CLS;
                 }
                     break;

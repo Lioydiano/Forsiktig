@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     std::cout << "- 'x' to enable/disable auto-strike\n\n";
     std::cout << "Digits from 1 to 9 are your enemies, while you're a $\n";
     std::cout << "Avoid bullets fired from enemies, and shoot them to get ammunitions\n";
-    system("pause > nul");
+    getch();
 
     mainloop();
 
