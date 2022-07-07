@@ -71,11 +71,13 @@ public:
     int y; // y position
     char direction; // direction
     int bullet_speed; // bullet speed
+    bool alive;
 
     Character (int x_origin, int y_origin, int direction) {
         this->x = x_origin;
         this->y = y_origin;
         this->direction = direction;
+        this->alive = true;
     }
 
     void movePlayer(char choice) {
@@ -232,7 +234,6 @@ public:
 
     int value; // character value (an Enemy's skin will be its value)
     char skin;
-    bool alive; // is the enemy alive?
 
     Enemy (int x_origin, int y_origin, int direction): Character(x_origin, y_origin, direction) {
         this->value = rand()%9+1;
@@ -285,6 +286,7 @@ public:
     char direction; // direction of the bullet
     bool fired; // if the bullet was fired by the player or by the enemy
     bool active; // if the bullet is active or not
+    char skin; // skin of the bullet
 
     Bullet(int x_origin, int y_origin, int speed, int direction, bool fired) {
         this->x = x_origin;
@@ -293,6 +295,7 @@ public:
         this->direction = direction;
         this->fired = fired;
         this->active = true;
+        this->skin = direction_to_skin[direction];
     }
 
     void move() {
