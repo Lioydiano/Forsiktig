@@ -13,8 +13,13 @@ namespace game {
 void printField() {
     std::cout << CLS;
     for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 50; j++)
+        for (int j = 0; j < 50; j++) {
+            if (i == game::player.y && j == game::player.x) {
+                std::cout << "\x1B[31m$\033[0m";
+                continue;
+            }
             std::cout << game::field[i][j];
+        }
         std::cout << '\n';
     }
 
