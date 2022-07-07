@@ -56,3 +56,32 @@ Standard configuration loaded
 
 Now you're ready to play. You just have to send a key, and the game will start.
 By default it's paused, you can resume it by pressing `r`/`R`.
+
+```batch
+
+##################################################
+#      ^              ^                          #
+#                                    <   9       #
+#                     8                          #
+#                                                #
+#                                       >        #
+#                                                #
+#                                                #
+#                                                #
+#                                                #
+#                                1     >         #
+#        1                                       #
+#                                                #
+#        v                     >                 #
+#                                                #
+#           $                           6        #
+#                                                #
+#                                                #
+#                                                #
+##################################################
+POINTS          ENEMIES          AMMUNITIONS
+  47               5               100
+
+```
+
+Avoid green bullets, and shoot blue enemies to get ammunitions!
