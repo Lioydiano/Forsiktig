@@ -373,7 +373,7 @@ namespace game {
         }
 
         char directionalChar() {
-            return directional_constants[rand() % 4];
+            return directional_chars[rand() % 4];
         }
     }
 }
