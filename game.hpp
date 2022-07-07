@@ -22,10 +22,11 @@ void printField() {
                 continue;
             }
             for (int k = 0; k < game::enemies.size(); k++) {
-                if (!game::enemies[k].alive)
-                    continue;
                 if (i == game::enemies[k].y && j == game::enemies[k].x) {
-                    std::cout << std::string("\x1B[34m") + game::enemies[k].skin + std::string("\033[0m");
+                    if (game::enemies[k].alive)
+                        std::cout << std::string("\x1B[34m") + game::enemies[k].skin + std::string("\033[0m");
+                    else
+                        std::cout << "\x1B[34m@\033[0m";
                     goto escape;
                 }
             }
