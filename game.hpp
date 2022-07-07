@@ -15,10 +15,23 @@ void printField() {
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++) {
             if (i == game::player.y && j == game::player.x) {
-                std::cout << "\x1B[31m$\033[0m";
+                if (game::player.alive)
+                    std::cout << "\x1B[31m$\033[0m";
+                else
+                    std::cout << "\x1B[31m@\033[0m";
                 continue;
             }
+            for (int k = 0; k < game::enemies.size(); k++) {
+                if (!game::enemies[k].alive)
+                    continue;
+                if (i == game::enemies[k].y && j == game::enemies[k].x) {
+                    std::cout << std::string("\x1B[34m") + game::enemies[k].skin + std::string("\033[0m");
+                    goto escape;
+                }
+            }
             std::cout << game::field[i][j];
+            escape:
+                continue;
         }
         std::cout << '\n';
     }
@@ -94,6 +107,7 @@ void updateField() {
     }
 
     if (died) {
+        player.alive = false;
         // Insert dead player into the field
         field[player.y][player.x] = DIED_SKIN;
         printField();
