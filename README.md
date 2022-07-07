@@ -2,11 +2,13 @@
 
 Forsiktig is a terminal shooting game.
 
+## OS Compatibility
+
+Forsiktig is compatible with only Windows, mostly due to the use of the platform-specific `conio.h`.
+
 ## Download
 
 To download the latest version of Forsiktig, go to [`GitHub`](https://github.com/Lioydiano/Forsiktig) and then download the [`.exe`](https://github.com/Lioydiano/Forsiktig/blob/main/forsiktig.exe?raw=true) file.
-
-If you are on `Linux` or `MacOS` you must install [`wine`](https://www.winehq.org/) or compile the game yourself.
 
 ## Play
 
