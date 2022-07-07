@@ -13,6 +13,7 @@ To download the latest version of Forsiktig, go to [`GitHub`](https://github.com
 ## Play
 
 Once you have your `.exe` file, you can play Forsiktig by running it.
+You should run it with `Windows Terminal` (WT), which supports colors.
 
 ```batch
 
