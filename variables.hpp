@@ -164,7 +164,7 @@ namespace game {
             game::starting_ammunitions = 100;
             game::starting_enemies = 4;
             std::cout << "Standard configuration loaded" << std::endl;
-            system("pause > nul");
+            getch();
         } else {
             std::cout << "Frame duration [unsigned int] (ms): ";
             while (!(std::cin >> game::frame_duration)) {
@@ -206,7 +206,7 @@ namespace game {
             }
 
             std::cout << "Configuration loaded" << std::endl;
-            system("pause > nul");
+            getch();
             std::cout << CLS;
             std::cout << "Frame duration: " << game::frame_duration << std::endl;
             std::cout << "Starting ammunitions: " << game::starting_ammunitions << std::endl;
@@ -218,10 +218,10 @@ namespace game {
                     saveSettings(std::make_tuple(game::frame_duration, game::starting_enemies, game::starting_ammunitions));
             }
 
-            system("pause > nul");
+            getch();
             std::cout << CLS;
             std::cout << "\nPress any key to start the game." << std::endl;
-            system("pause > nul");
+            getch();
         }
     }
 };

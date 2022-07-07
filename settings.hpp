@@ -27,7 +27,7 @@ std::tuple<unsigned int, unsigned int, unsigned int> loadSettings() {
     if (!file) {
         std::cout << "You don't have saved settings." << std::endl;
         std::cout << "You will play with default settings." << std::endl;
-        system("pause > nul");
+        getch();
         return std::make_tuple(DEFAULT_FRAME_DURATION, DEFAULT_STARTING_ENEMIES, DEFAULT_STARTING_AMMUNITIONS);
     }
     unsigned int lines = countLines(SETTINGS_PATH);
