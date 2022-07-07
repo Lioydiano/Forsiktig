@@ -29,6 +29,17 @@ void printField() {
                     goto escape;
                 }
             }
+            for (int k = 0; k < game::bullets.size(); k++) {
+                if (!game::bullets[k].active)
+                    continue;
+                if (i == game::bullets[k].y && j == game::bullets[k].x) {
+                    if (game::bullets[k].fired == PLAYER)
+                        std::cout << std::string("\x1B[35m") + game::bullets[k].skin + std::string("\033[0m");
+                    else
+                        std::cout << std::string("\x1B[32m") + game::bullets[k].skin + std::string("\033[0m");
+                    goto escape;
+                }
+            }
             std::cout << game::field[i][j];
             escape:
                 continue;
