@@ -64,6 +64,12 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define SEVENTEEN_SPACES "               "
 #define CLS "\33[2J\33[H"
 
+// Probability constants
+#define PROBABILITY_OF_ENEMY_APPEARING 0.02
+#define PROBABILITY_OF_ENEMY_MOVING 0.5
+#define PROBABILITY_OF_ENEMY_SHOOTING 0.3
+#define PROBABILITY_OF_ENEMY_TURNING 0.5
+
 class Character {
 public:
 
@@ -367,7 +373,7 @@ namespace game {
         }
 
         char directionalChar() {
-            return directional_constants[rand() % 4];
+            return directional_chars[rand() % 4];
         }
     }
 }

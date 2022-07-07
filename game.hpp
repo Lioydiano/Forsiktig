@@ -1,6 +1,7 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <random>
 #include <time.h>
 
 #include "variables.hpp"
@@ -192,6 +193,14 @@ void mainloop() {
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
     game::player.ammunitions = game::starting_ammunitions;
 
+    // Random
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::bernoulli_distribution turning_distribution(PROBABILITY_OF_ENEMY_TURNING);
+    std::bernoulli_distribution shooting_distribution(PROBABILITY_OF_ENEMY_SHOOTING);
+    std::bernoulli_distribution moving_distribution(PROBABILITY_OF_ENEMY_MOVING);
+    std::bernoulli_distribution appearing_distribution(PROBABILITY_OF_ENEMY_APPEARING);
+
     char choice;
     while (choice != 'q') {
         auto input = std::async(std::launch::async, getCharOrArrow);
@@ -206,14 +215,15 @@ void mainloop() {
             for (auto& enemy: game::enemies) {
                 if (!enemy.alive)
                     continue;
-                if (rand()%5 == 0) {
+                if (turning_distribution(gen)) {
                     enemy.turn();
+                } else if (shooting_distribution(gen)) {
                     enemy.fireBullet();
-                } else if (rand()%2 == 0) {
+                } else if (moving_distribution(gen)) {
                     enemy.movePlayer(game::random::directionalChar());
                 }
             }
-            if (rand()%50 == 0)
+            if (appearing_distribution(gen))
                 game::random::addEnemy(rand()%48+1, rand()%18+1);
 
             if (game::player.auto_fire)
