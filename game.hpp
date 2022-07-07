@@ -219,7 +219,6 @@ void mainloop() {
                 game::player.fireBullet();
             game::player.points++;
         }
-        printField();
 
         choice = input.get();
         switch (choice) {
