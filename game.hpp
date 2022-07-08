@@ -12,7 +12,7 @@ namespace game {
 };
 
 void printField() {
-    std::cout << CLS;
+    std::cout << SS;
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++) {
             if (i == game::player.y && j == game::player.x) {
@@ -118,6 +118,7 @@ void updateField() {
         printField();
         std::cout << "You died!\n";
         getch(); // Prevent Window from closing
+        CLSa;
         exit(0); // exit the game
     }
 }
@@ -143,15 +144,15 @@ char getCharOrArrow() {
 
 void mainloop() {
     // Configure the game
-    std::cout << CLS;
+    CLS;
     std::cout << "Do you want to configure the game? (y/n)\n> ";
     char c = getch();
-    std::cout << CLS;
+    CLS;
     switch (c) {
         case 'y': case 'Y':
             std::cout << "Do you want to load the settings? (y/n)\n> ";
             c = getch();
-            std::cout << CLS;
+            CLS;
             switch (c) {
                 case 'y': case 'Y': {
                     auto settings = loadSettings();
@@ -160,7 +161,7 @@ void mainloop() {
                     game::starting_ammunitions = std::get<2>(settings);
                     std::cout << "Settings loaded!\n";
                     getch();
-                    std::cout << CLS;
+                    CLS;
                 }
                     break;
                 default:

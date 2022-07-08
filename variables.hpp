@@ -5,6 +5,7 @@
 #include <cstring>
 #include <conio.h>
 
+#include "clearScreen.hpp"
 #include "settings.hpp"
 
 
@@ -62,7 +63,9 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define SPACE_CHAR ' '
 #define TEN_SPACES "          "
 #define SEVENTEEN_SPACES "               "
-#define CLS "\33[2J\33[H"
+#define SS "\33[2J\33[H" // Scroll Screen
+#define CLS clearScreen() // CLear Screen (with spaces but without keeping attributes)
+#define CLSa clearScreen(true, true) // CLear Screen (with spaces and keeping attributes)
 
 // Probability constants
 #define PROBABILITY_OF_ENEMY_APPEARING 0.02
@@ -173,13 +176,14 @@ namespace game {
             game::starting_enemies = 4;
             std::cout << "Standard configuration loaded" << std::endl;
             getch();
+            CLS;
         } else {
             std::cout << "Frame duration [unsigned int] (ms): ";
             while (!(std::cin >> game::frame_duration)) {
                 std::cout << "Invalid input. Try again.\n";
                 std::cout << "Frame duration [unsigned int] (ms): ";
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
             }
             if (game::frame_duration < 50) {
                 std::cout << "Frame duration too low. Setting to 50.\n";
@@ -194,7 +198,7 @@ namespace game {
                 std::cout << "Invalid input. Try again.\n";
                 std::cout << "Starting ammunitions [unsigned int]: ";
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
             }
             if (game::starting_ammunitions < 1) {
                 std::cout << "Did you want to start without ammunitions? Setting to 1.\n";
@@ -206,7 +210,7 @@ namespace game {
                 std::cout << "Invalid input. Try again.\n";
                 std::cout << "Starting enemies [unsigned int]: ";
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
             }
             if (game::starting_enemies > 20) {
                 std::cout << "Not enough space for everyone in the space! Setting to 50.\n";
@@ -215,7 +219,7 @@ namespace game {
 
             std::cout << "Configuration loaded" << std::endl;
             getch();
-            std::cout << CLS;
+            CLS;
             std::cout << "Frame duration: " << game::frame_duration << std::endl;
             std::cout << "Starting ammunitions: " << game::starting_ammunitions << std::endl;
             std::cout << "Starting enemies: " << game::starting_enemies << std::endl << std::endl;
@@ -227,9 +231,10 @@ namespace game {
             }
 
             getch();
-            std::cout << CLS;
+            CLS;
             std::cout << "\nPress any key to start the game." << std::endl;
             getch();
+            CLS;
         }
     }
 };
