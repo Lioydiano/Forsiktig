@@ -113,9 +113,10 @@ void updateField() {
     if (died) {
         player.alive = false;
         printField();
-        std::cout << "You died!" << std::endl;
+        std::cout << "\x1b[31mYou died!\033[0m" << std::endl;
         getch(); // Prevent Window from closing
         system("cls"); // Can't use CLS because it only clears last game field
+        std::cout << "\x1b[?25h"; // Show cursor
         exit(0); // exit the game
     }
 }
@@ -175,6 +176,7 @@ void mainloop() {
     std::ios_base::sync_with_stdio(false);
     game::emptyField();
     printField();
+    std::cout << "\x1b[?25l"; // Hide cursor
 
     for (int i=0; i<game::starting_enemies; i++)
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
@@ -221,6 +223,7 @@ void mainloop() {
         choice = input.get();
         switch (choice) {
             case 'q': case 'Q':
+                std::cout << "\x1b[?25h"; // Show cursor
                 return;
             case 'p': case 'P':
                 game::status = PAUSED;
