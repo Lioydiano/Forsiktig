@@ -108,29 +108,18 @@ void updateField() {
             died = true;
     }
 
-    // Insert bullets into the field
-    for (auto& bullet: bullets) {
-        if (bullet.active)
-            field[bullet.y][bullet.x] = direction_to_skin[bullet.direction];
-    }
-
-    // Insert enemies into the field
+    // Get skins for enemies
     for (auto& enemy: enemies) {
-        field[enemy.y][enemy.x] = enemy.getSkin();
+        enemy.getSkin();
     }
 
     if (died) {
         player.alive = false;
-        // Insert dead player into the field
-        field[player.y][player.x] = DIED_SKIN;
         printField();
         std::cout << "You died!\n";
         getch(); // Prevent Window from closing
         exit(0); // exit the game
     }
-
-    // Insert player into the field
-    field[player.y][player.x] = PLAYER_SKIN;
 }
 
 
