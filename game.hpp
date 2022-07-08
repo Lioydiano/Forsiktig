@@ -6,17 +6,14 @@
 
 #include "variables.hpp"
 
-
-namespace game {
-    Player player;
-};
+Player player;
 
 void printField() {
     std::cout << SS;
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++) {
-            if (i == game::player.y && j == game::player.x) {
-                if (game::player.alive)
+            if (i == player.y && j == player.x) {
+                if (player.alive)
                     std::cout << "\x1B[31m$\033[0m";
                 else
                     std::cout << "\x1B[31m@\033[0m";
@@ -54,7 +51,7 @@ void printField() {
         sum += enemy.alive;
 
     std::cout << "POINTS" << TEN_SPACES << "ENEMIES" << TEN_SPACES << "AMMUNITIONS" << std::endl;
-    std::cout << "  " << game::player.points << SEVENTEEN_SPACES << sum << SEVENTEEN_SPACES << game::player.ammunitions << std::endl;
+    std::cout << "  " << player.points << SEVENTEEN_SPACES << sum << SEVENTEEN_SPACES << player.ammunitions << std::endl;
 }
 
 void moveAllBullets() {
@@ -116,9 +113,9 @@ void updateField() {
     if (died) {
         player.alive = false;
         printField();
-        std::cout << "You died!\n";
+        std::cout << "You died!" << std::endl;
         getch(); // Prevent Window from closing
-        CLSa;
+        system("cls"); // Can't use CLS because it only clears last game field
         exit(0); // exit the game
     }
 }
@@ -181,7 +178,7 @@ void mainloop() {
 
     for (int i=0; i<game::starting_enemies; i++)
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
-    game::player.ammunitions = game::starting_ammunitions;
+    player.ammunitions = game::starting_ammunitions;
 
     // Random
     std::random_device rd;
@@ -216,9 +213,9 @@ void mainloop() {
             if (appearing_distribution(gen))
                 game::random::addEnemy(rand()%48+1, rand()%18+1);
 
-            if (game::player.auto_fire)
-                game::player.fireBullet();
-            game::player.points++;
+            if (player.auto_fire)
+                player.fireBullet();
+            player.points++;
         }
 
         choice = input.get();
@@ -233,15 +230,15 @@ void mainloop() {
                 break;
             case 'w': case 'W': case 'a': case 'A': case 's': case 'S': case 'd': case 'D':
                 if (game::status == PLAYING)
-                    game::player.movePlayer(choice);
+                    player.movePlayer(choice);
                 break;
             case BEFORE_KEY_UP: case BEFORE_KEY_DOWN: case BEFORE_KEY_LEFT: case BEFORE_KEY_RIGHT:
-                game::player.changeFireDirection(choice);
-                if (game::status == PLAYING && game::player.ammunitions > 0 && !game::player.auto_fire)
-                    game::player.fireBullet();
+                player.changeFireDirection(choice);
+                if (game::status == PLAYING && player.ammunitions > 0 && !player.auto_fire)
+                    player.fireBullet();
                 break;
             case 'x': case 'X':
-                game::player.auto_fire = !game::player.auto_fire;
+                player.auto_fire = !player.auto_fire;
                 break;
         }
     }

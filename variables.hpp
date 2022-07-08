@@ -64,7 +64,7 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define TEN_SPACES "          "
 #define SEVENTEEN_SPACES "               "
 #define SS "\33[2J\33[H" // Scroll Screen
-#define CLS clearScreen() // CLear Screen (with spaces but without keeping attributes)
+#define CLS clearScreen(true, false) // CLear Screen (with spaces but without keeping attributes)
 #define CLSa clearScreen(true, true) // CLear Screen (with spaces and keeping attributes)
 
 // Probability constants
