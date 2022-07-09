@@ -14,17 +14,17 @@ void printField() {
         for (int j = 0; j < 50; j++) {
             if (i == player.y && j == player.x) {
                 if (player.alive)
-                    std::cout << "\x1B[31m$\033[0m";
+                    std::cout << "\x1b[1m\x1B[91m$\033[0m";
                 else
-                    std::cout << "\x1B[31m@\033[0m";
+                    std::cout << "\x1b[1m\x1B[91m@\033[0m";
                 continue;
             }
             for (int k = 0; k < game::enemies.size(); k++) {
                 if (i == game::enemies[k].y && j == game::enemies[k].x) {
                     if (game::enemies[k].alive)
-                        std::cout << std::string("\x1B[34m") + game::enemies[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1b[1m\x1B[94m") + game::enemies[k].skin + std::string("\033[0m");
                     else
-                        std::cout << "\x1B[34m@\033[0m";
+                        std::cout << "\x1B[94m@\033[0m";
                     goto escape;
                 }
             }
@@ -33,9 +33,9 @@ void printField() {
                     continue;
                 if (i == game::bullets[k].y && j == game::bullets[k].x) {
                     if (game::bullets[k].fired == PLAYER)
-                        std::cout << std::string("\x1B[35m") + game::bullets[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1B[95m\x1b[1m") + game::bullets[k].skin + std::string("\033[0m");
                     else
-                        std::cout << std::string("\x1B[32m") + game::bullets[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1B[92m") + game::bullets[k].skin + std::string("\033[0m");
                     goto escape;
                 }
             }
@@ -50,8 +50,8 @@ void printField() {
     for (auto& enemy : game::enemies)
         sum += enemy.alive;
 
-    std::cout << "POINTS" << TEN_SPACES << "ENEMIES" << TEN_SPACES << "AMMUNITIONS" << std::endl;
-    std::cout << "  " << player.points << SEVENTEEN_SPACES << sum << SEVENTEEN_SPACES << player.ammunitions << std::endl;
+    std::cout << "\x1b[1mPOINTS" << TEN_SPACES << "ENEMIES" << TEN_SPACES << "AMMUNITIONS" << std::endl;
+    std::cout << "  " << player.points << SEVENTEEN_SPACES << sum << SEVENTEEN_SPACES << player.ammunitions << std::endl << "\x1b[0m";
 }
 
 void moveAllBullets() {
@@ -113,7 +113,7 @@ void updateField() {
     if (died) {
         player.alive = false;
         printField();
-        std::cout << "\x1b[31mYou died!\033[0m" << std::endl;
+        std::cout << "\x1b[31m\x1b[1mYou died!\033[0m" << std::endl;
         getch(); // Prevent Window from closing
         system("cls"); // Can't use CLS because it only clears last game field
         std::cout << "\x1b[?25h"; // Show cursor
