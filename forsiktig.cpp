@@ -11,6 +11,7 @@ int main(int argc, char* argv[]) {
     }
 
     CLS;
+    std::cout << "\x1b]2;Forsiktig\x07"; // Set window title
     std::cout << "Welcome to Forsiktig!\nFLAK-ZOSO 3/7/22\n\n";
     std::cout << "Instructions:\n";
     std::cout << "- 'q' to quit\n";
