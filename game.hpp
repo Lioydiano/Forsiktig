@@ -114,8 +114,6 @@ void updateField() {
         player.alive = false;
         printField();
         std::cout << "\x1b[31m\x1b[1mYou died!\033[0m" << std::endl;
-        getch(); // Prevent Window from closing
-        system("cls"); // Can't use CLS because it only clears last game field
         std::cout << "\x1b[?25h"; // Show cursor
         exit(0); // exit the game
     }
