@@ -169,6 +169,9 @@ void mainloop() {
             game::configure(true);
             break;
     }
+    for (int i=0; i<game::starting_enemies; i++)
+        game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    player.ammunitions = game::starting_ammunitions;
 
     srand(time(NULL));
     std::ios_base::sync_with_stdio(false);
@@ -176,9 +179,6 @@ void mainloop() {
     printField();
     std::cout << "\x1b[?25l"; // Hide cursor
 
-    for (int i=0; i<game::starting_enemies; i++)
-        game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
-    player.ammunitions = game::starting_ammunitions;
 
     // Random
     std::random_device rd;
