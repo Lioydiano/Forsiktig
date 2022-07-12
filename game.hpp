@@ -169,6 +169,8 @@ void mainloop() {
             game::configure(true);
             break;
     }
+    srand(time(NULL));
+
     for (int i=0; i<game::starting_enemies; i++)
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
     player.ammunitions = game::starting_ammunitions;
