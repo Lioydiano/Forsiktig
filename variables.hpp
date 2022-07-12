@@ -272,6 +272,7 @@ public:
     int ammunitions; // ammunitions counter
     int points; // points counter
     bool auto_fire; // auto fire status
+    bool cross_fire; // cross fire status
     int fire_direction; // fire direction
 
     Player(): Character(10, 10, NORTH) {
@@ -279,6 +280,7 @@ public:
         this->ammunitions = 100;
         this->points = 0;
         this->auto_fire = false;
+        this->cross_fire = false;
         this->fire_direction = NORTH;
     }
 
@@ -341,7 +343,15 @@ void Enemy::turn() {
 
 
 void Player::fireBullet() {
-    if (this->ammunitions > 0) {
+    if (this->cross_fire) {
+        if (this->ammunitions < 4) // Can't fire 4 bullets, so we don't fire
+            return;
+        this->ammunitions -= 4; // Remove 4 ammunitions, because the player fires 4 bullets (one for each side)
+        game::bullets.push_back(Bullet(this->x, this->y, this->bullet_speed, NORTH, PLAYER));
+        game::bullets.push_back(Bullet(this->x, this->y, this->bullet_speed, EAST, PLAYER));
+        game::bullets.push_back(Bullet(this->x, this->y, this->bullet_speed, WEST, PLAYER));
+        game::bullets.push_back(Bullet(this->x, this->y, this->bullet_speed, SOUTH, PLAYER));
+    } else if (this->ammunitions > 0) {
         this->ammunitions--;
         Bullet bullet(this->x, this->y, this->bullet_speed, this->fire_direction, PLAYER);
         game::bullets.push_back(bullet);

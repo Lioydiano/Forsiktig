@@ -1,7 +1,7 @@
 #include "game.hpp"
 // g++ forsiktig.cpp -o forsiktig.exe
 
-#define VERSION "1.0.0"
+#define VERSION "1.1.0a1"
 #define DATE "12-07-2022"
 
 
@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
     std::cout << "- 'w | a | s | d' to step\n";
     std::cout << "- Use arrows to fire a bullet\n";
     std::cout << "- 'x' to enable/disable auto-strike\n\n";
+    std::cout << "- '+' to enable/disable cross-strike\n";
     std::cout << "Digits from 1 to 9 are your enemies, while you're a $\n";
     std::cout << "Avoid bullets fired from enemies, and shoot them to get ammunitions\n";
     getch();

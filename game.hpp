@@ -60,6 +60,8 @@ void moveAllBullets() {
             if (i == j) continue;
 
             if (game::bullets[i].x == game::bullets[j].x && game::bullets[i].y == game::bullets[j].y) {
+                if (game::bullets[i].fired == PLAYER && game::bullets[j].fired == PLAYER)
+                    continue; // Ignore when both are fired by player
                 game::bullets[i].active = false;
                 game::bullets[j].active = false;
             }
@@ -242,6 +244,9 @@ void mainloop() {
                 break;
             case 'x': case 'X':
                 player.auto_fire = !player.auto_fire;
+                break;
+            case '+':
+                player.cross_fire = !player.cross_fire;
                 break;
         }
     }
