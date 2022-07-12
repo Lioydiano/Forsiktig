@@ -1,7 +1,7 @@
 #include "game.hpp"
 // g++ forsiktig.cpp -o forsiktig.exe
 
-#define VERSION "1.1.0a1"
+#define VERSION "1.1.0b2"
 #define DATE "12-07-2022"
 
 
@@ -22,15 +22,15 @@ int main(int argc, char* argv[]) {
     std::cout << "\x1b]2;Forsiktig\x07"; // Set window title
     std::cout << "\x1b[31;1mForsiktig v" << VERSION << "\nFLAK-ZOSO " << DATE << "\x1b[0m\n\n";
     std::cout << "Instructions:\n";
-    std::cout << "- 'q' to quit\n";
-    std::cout << "- 'p' to pause\n";
-    std::cout << "- 'r' to resume <-- you also start the game resuming it\n";
-    std::cout << "- 'w | a | s | d' to step\n";
-    std::cout << "- Use arrows to fire a bullet\n";
-    std::cout << "- 'x' to enable/disable auto-strike\n\n";
-    std::cout << "- '+' to enable/disable cross-strike\n";
-    std::cout << "Digits from 1 to 9 are your enemies, while you're a $\n";
-    std::cout << "Avoid bullets fired from enemies, and shoot them to get ammunitions\n";
+    std::cout << "- '\x1b[35mq\x1b[0m' to quit\n";
+    std::cout << "- '\x1b[35mp\x1b[0m' to pause\n";
+    std::cout << "- '\x1b[35mr\x1b[0m' to resume <-- you also start the game resuming it\n";
+    std::cout << "- '\x1b[35mw\x1b[0m | \x1b[35ma\x1b[0m | \x1b[35ms\x1b[0m | \x1b[35md\x1b[0m' to step\n";
+    std::cout << "- Use \x1b[35marrows\x1b[0m to fire a bullet\n";
+    std::cout << "- '\x1b[35mx\x1b[0m' to enable/disable auto-strike\n";
+    std::cout << "- '\x1b[35m+\x1b[0m' to enable/disable cross-strike\n\n";
+    std::cout << "Digits from \x1b[34m1\x1b[0m to \x1b[34m9\x1b[0m are your enemies, while you're a \x1b[31m$\x1b[0m\n";
+    std::cout << "Avoid \x1b[32mbullets\x1b[0m fired from enemies, and shoot them to get ammunitions\n";
     getch();
 
     mainloop();
