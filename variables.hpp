@@ -5,6 +5,7 @@
 #include <cstring>
 #include <conio.h>
 
+#include "utilities.hpp"
 #include "clearScreen.hpp"
 #include "settings.hpp"
 
@@ -73,6 +74,14 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PROBABILITY_OF_ENEMY_SHOOTING 0.3
 #define PROBABILITY_OF_ENEMY_TURNING 0.5
 
+// AI constants
+#define AI_DIFFICULTY_IDIOT 0
+#define AI_DIFFICULTY_EASY 0.25
+#define AI_DIFFICULTY_MEDIUM 0.5
+#define AI_DIFFICULTY_HARD 0.75
+#define AI_DIFFICULTY_INSANE 1.0
+const double AI_DIFFICULTIES[] = {0.0, 0.25, 0.5, 0.75, 1.0};
+
 class Character {
 public:
 
@@ -132,6 +141,7 @@ namespace game {
     unsigned int starting_enemies;
     unsigned int starting_ammunitions;
     unsigned int frame_duration; // duration of each frame in milliseconds
+    float AI; // difficulty of the AI
     bool status; // game status (PLAYING or PAUSED)
 
     char field[20][50] = {' '}; // game field
@@ -174,6 +184,7 @@ namespace game {
             game::frame_duration = 100;
             game::starting_ammunitions = 100;
             game::starting_enemies = 4;
+            game::AI = AI_DIFFICULTY_MEDIUM;
             std::cout << "Standard configuration loaded" << std::endl;
             getch();
             CLS;
@@ -232,6 +243,25 @@ namespace game {
 
             getch();
             CLS;
+
+            std::cout << "AI difficulty [unsigned float] (0->1): ";
+            while (!(std::cin >> game::AI)) {
+                std::cout << "Invalid input. Try again.\n";
+                std::cout << "AI difficulty [unsigned float]: ";
+                std::cin.clear();
+                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+            }
+            if (game::AI > 1) {
+                std::cout << "AI difficulty too high. Setting to 1.\n";
+                game::AI = 1;
+            } else if (game::AI < 0) {
+                std::cout << "AI difficulty too low. Setting to 0.\n";
+                game::AI = 0;
+            }
+            game::AI = closest(AI_DIFFICULTIES, 5, game::AI);
+            getch();
+            CLS;
+
             std::cout << "\nPress any key to start the game." << std::endl;
             getch();
             CLS;
@@ -262,7 +292,9 @@ public:
 
     void fireBullet();
 
-    void turn();
+    void turn(bool smart, Player &player);
+
+    void move();
 };
 
 
@@ -336,9 +368,69 @@ void Enemy::fireBullet() {
 }
 
 
-void Enemy::turn() {
-    // As of now it's just a random turn, but it could be a smarter one
-    this->direction = directional_constants[rand()%4];
+void Enemy::turn(bool smart, Player &player) {
+    if (smart) {
+        // If the enemy can see the player, it will fire
+        if (this->x == player.x && this->y == player.y) {
+            this->fireBullet();
+        } else if (this->x == player.x) {
+            if (this->y > player.y) {
+                this->direction = NORTH;
+            } else {
+                this->direction = SOUTH;
+            }
+        } else if (this->y == player.y) {
+            if (this->x > player.x) {
+                this->direction = WEST;
+            } else {
+                this->direction = EAST;
+            }
+        } else {
+            // If the enemy can't see the player, it will move towards the player's coordinates
+            if (abs(this->x - player.x) < abs(this->y - player.y)) { // You are closer to the x coordinate of the player
+                if (this->x > player.x) {
+                    this->direction = WEST;
+                } else {
+                    this->direction = EAST;
+                }
+            } else {
+                if (this->y > player.y) {
+                    this->direction = NORTH;
+                } else {
+                    this->direction = SOUTH;
+                }
+            }
+        }
+
+    } else {
+        // As of now it's just a random turn, but it could be a smarter one
+        this->direction = directional_constants[rand()%4];
+    }
+}
+
+
+void Enemy::move() {
+    if (this->direction == NORTH) {
+        this->y--;
+    } else if (this->direction == EAST) {
+        this->x++;
+    } else if (this->direction == WEST) {
+        this->x--;
+    } else if (this->direction == SOUTH) {
+        this->y++;
+    }
+
+    if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
+        if (this->x <= 0 && this->direction == WEST) {
+            this->x = 48;
+        } else if (this->x >= 49 && this->direction == EAST) {
+            this->x = 1;
+        } else if (this->y <= 0 && this->direction == NORTH) {
+            this->y = 18;
+        } else if (this->y >= 19 && this->direction == SOUTH) {
+            this->y = 1;
+        }
+    }
 }
 
 

@@ -60,8 +60,8 @@ void moveAllBullets() {
             if (i == j) continue;
 
             if (game::bullets[i].x == game::bullets[j].x && game::bullets[i].y == game::bullets[j].y) {
-                if (game::bullets[i].fired == PLAYER && game::bullets[j].fired == PLAYER)
-                    continue; // Ignore when both are fired by player
+                if (game::bullets[i].fired ==  game::bullets[j].fired)
+                    continue; // Ignore when both are fired by same "team"
                 game::bullets[i].active = false;
                 game::bullets[j].active = false;
             }
@@ -160,6 +160,24 @@ void mainloop() {
                     std::cout << "Settings loaded!\n";
                     getch();
                     CLS;
+
+                    std::cout << "AI difficulty [unsigned float] (0->1): ";
+                    while (!(std::cin >> game::AI)) {
+                        std::cout << "Invalid input. Try again.\n";
+                        std::cout << "AI difficulty [unsigned float]: ";
+                        std::cin.clear();
+                        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+                    }
+                    if (game::AI > 1) {
+                        std::cout << "AI difficulty too high. Setting to 1.\n";
+                        game::AI = 1;
+                    } else if (game::AI < 0) {
+                        std::cout << "AI difficulty too low. Setting to 0.\n";
+                        game::AI = 0;
+                    }
+                    game::AI = closest(AI_DIFFICULTIES, 5, game::AI);
+                    getch();
+                    CLS;
                 }
                     break;
                 default:
@@ -191,6 +209,7 @@ void mainloop() {
     std::bernoulli_distribution shooting_distribution(PROBABILITY_OF_ENEMY_SHOOTING);
     std::bernoulli_distribution moving_distribution(PROBABILITY_OF_ENEMY_MOVING);
     std::bernoulli_distribution appearing_distribution(PROBABILITY_OF_ENEMY_APPEARING);
+    std::bernoulli_distribution intelligence_distribution(game::AI);
 
     char choice;
     while (choice != 'q') {
@@ -207,11 +226,11 @@ void mainloop() {
                 if (!enemy.alive)
                     continue;
                 if (turning_distribution(gen)) {
-                    enemy.turn();
+                    enemy.turn(intelligence_distribution(gen), player);
                 } else if (shooting_distribution(gen)) {
                     enemy.fireBullet();
                 } else if (moving_distribution(gen)) {
-                    enemy.movePlayer(game::random::directionalChar());
+                    enemy.move();
                 }
             }
             if (appearing_distribution(gen))
