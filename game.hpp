@@ -14,9 +14,9 @@ void printField() {
         for (int j = 0; j < 50; j++) {
             if (i == player.y && j == player.x) {
                 if (player.alive)
-                    std::cout << "\x1b[1m\x1B[91m$\033[0m";
+                    std::cout << "\x1b[91m$\033[0m";
                 else
-                    std::cout << "\x1b[1m\x1B[91m@\033[0m";
+                    std::cout << "\x1b[91m@\033[0m";
                 continue;
             }
             for (int k = 0; k < game::enemies.size(); k++) {
