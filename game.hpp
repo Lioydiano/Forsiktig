@@ -95,8 +95,10 @@ void updateField() {
                 player.ammunitions += enemies[j].value;
                 enemies[j].value--;
 
-                if (enemies[j].value == 0)
+                if (enemies[j].value == 0) {
+                    std::cout << '\x07'; // Beep
                     enemies[j].alive = false;
+                }
 
                 bullets[i].active = false;
                 bullets.erase(bullets.begin() + i); // remove bullet from the vector
