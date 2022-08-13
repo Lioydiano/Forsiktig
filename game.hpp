@@ -89,6 +89,16 @@ void updateField() {
             enemies.erase(enemies.begin() + i); // remove enemy
     }
 
+    for (int i=0; i<obstacles.size(); i++) {
+        if (!obstacles[i].active)
+            obstacles.erase(obstacles.begin() + i); // remove obstacle
+    }
+
+    for (auto& obstacle: game::obstacles) {
+        if (obstacle.active) // This control shouldn't be necessary but it's better to be safe than sorry
+            game::field[obstacle.y][obstacle.x] = obstacle.skin;
+    }
+
     for (int i=0; i<bullets.size(); i++) {
         for (int j=0; j<enemies.size(); j++) {
             if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
@@ -212,6 +222,7 @@ void mainloop() {
     std::bernoulli_distribution moving_distribution(PROBABILITY_OF_ENEMY_MOVING);
     std::bernoulli_distribution appearing_distribution(PROBABILITY_OF_ENEMY_APPEARING);
     std::bernoulli_distribution intelligence_distribution(game::AI);
+    std::bernoulli_distribution obstacle_distribution(PROBABILITY_OF_OBSTACLE);
 
     char choice;
     while (choice != 'q') {
@@ -221,6 +232,8 @@ void mainloop() {
                 continue;
             
             moveAllBullets();
+            for (auto& obstacle: game::obstacles)
+                obstacle.checkHit();
             updateField();
             printField();
 
@@ -237,6 +250,8 @@ void mainloop() {
             }
             if (appearing_distribution(gen))
                 game::random::addEnemy(rand()%48+1, rand()%18+1);
+            if (obstacle_distribution(gen))
+                game::random::addObstacle(rand()%48+1, rand()%18+1);
 
             if (player.auto_fire)
                 player.fireBullet();
