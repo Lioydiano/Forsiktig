@@ -39,6 +39,12 @@ void printField() {
                     goto escape;
                 }
             }
+            for (int k = 0; k < game::obstacles.size(); k++) {
+                if (i == game::obstacles[k].y && j == game::obstacles[k].x) {
+                    std::cout << std::string("\x1B[33m") + game::obstacles[k].skin + std::string("\033[0m");
+                    goto escape;
+                }
+            }
             std::cout << game::field[i][j];
             escape:
                 continue;
