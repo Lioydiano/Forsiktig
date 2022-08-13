@@ -378,10 +378,10 @@ public:
     void move() {
         if (direction == NORTH) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y-i][this->x] == OBSTACLE_SKIN) {
+                if (game::field[this->y-1][this->x] == OBSTACLE_SKIN) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
-                        if (obstacle.x == this->x && obstacle.y == this->y-i) {
+                        if (obstacle.x == this->x && obstacle.y == this->y-1) {
                             obstacle.hp--;
                             if (obstacle.hp == 0)
                                 obstacle.active = false;
@@ -394,10 +394,10 @@ public:
             }
         } else if (direction == EAST) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y][this->x+i] == OBSTACLE_SKIN) {
+                if (game::field[this->y][this->x+1] == OBSTACLE_SKIN) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
-                        if (obstacle.x == this->x+i && obstacle.y == this->y) {
+                        if (obstacle.x == this->x+1 && obstacle.y == this->y) {
                             obstacle.hp--;
                             if (obstacle.hp == 0)
                                 obstacle.active = false;
@@ -410,10 +410,10 @@ public:
             }
         } else if (direction == WEST) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y][this->x-i] == OBSTACLE_SKIN) {
+                if (game::field[this->y][this->x-1] == OBSTACLE_SKIN) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
-                        if (obstacle.x == this->x-i && obstacle.y == this->y) {
+                        if (obstacle.x == this->x-1 && obstacle.y == this->y) {
                             obstacle.hp--;
                             if (obstacle.hp == 0)
                                 obstacle.active = false;
@@ -426,10 +426,10 @@ public:
             }
         } else if (direction == SOUTH) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y+i][this->x] == OBSTACLE_SKIN) {
+                if (game::field[this->y+1][this->x] == OBSTACLE_SKIN) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
-                        if (obstacle.x == this->x && obstacle.y == this->y+i) {
+                        if (obstacle.x == this->x && obstacle.y == this->y+1) {
                             obstacle.hp--;
                             if (obstacle.hp == 0)
                                 obstacle.active = false;
