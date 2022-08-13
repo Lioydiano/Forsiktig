@@ -74,7 +74,7 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PROBABILITY_OF_ENEMY_MOVING 0.5
 #define PROBABILITY_OF_ENEMY_SHOOTING 0.3
 #define PROBABILITY_OF_ENEMY_TURNING 0.5
-#define PROBABILITY_OF_OBSTACLE 0.1
+#define PROBABILITY_OF_OBSTACLE 0.05
 
 // AI constants
 #define AI_DIFFICULTY_IDIOT 0
@@ -587,8 +587,8 @@ namespace game {
 
         void addObstacle(int x, int y) {
             if (field[y][x] == ' ') {
-                field[y][x] = '#';
-                obstacles.push_back(Obstacle(x, y, '#'));
+                field[y][x] = OBSTACLE_SKIN;
+                obstacles.push_back(Obstacle(x, y, OBSTACLE_SKIN));
             }
         }
 
