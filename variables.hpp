@@ -10,6 +10,10 @@
 #include "settings.hpp"
 
 
+// Debug
+#define DEBUG 0
+#define OBSTACLES 0
+
 // Characters constants
 #define PLAYER_SKIN '$'
 #define ENEMY_SKIN '&'
@@ -74,7 +78,11 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PROBABILITY_OF_ENEMY_MOVING 0.5
 #define PROBABILITY_OF_ENEMY_SHOOTING 0.3
 #define PROBABILITY_OF_ENEMY_TURNING 0.5
-#define PROBABILITY_OF_OBSTACLE 0.05
+#if OBSTACLES
+    #define PROBABILITY_OF_OBSTACLE 0.5
+#else
+    #define PROBABILITY_OF_OBSTACLE 0.05
+#endif
 
 // AI constants
 #define AI_DIFFICULTY_IDIOT 0
@@ -533,21 +541,17 @@ void Enemy::turn(bool smart, Player &player) {
 
 void Enemy::move() {
     if (this->direction == NORTH) {
-        if (!game::obstacles_field[this->x][this->y-1]) {
+        if (!game::obstacles_field[this->y-1][this->x])
             this->y--;
-        }
     } else if (this->direction == EAST) {
-        if (!game::obstacles_field[this->x+1][this->y]) {
+        if (!game::obstacles_field[this->y][this->x+1])
             this->x++;
-        }
     } else if (this->direction == WEST) {
-        if (!game::obstacles_field[this->x-1][this->y]) {
+        if (!game::obstacles_field[this->y][this->x-1])
             this->x--;
-        }
     } else if (this->direction == SOUTH) {
-        if (!game::obstacles_field[this->x][this->y+1]) {
+        if (!game::obstacles_field[this->y+1][this->x])
             this->y++;
-        }
     }
 
     if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
