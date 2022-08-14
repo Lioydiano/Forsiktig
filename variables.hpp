@@ -13,6 +13,7 @@
 // Debug
 #define DEBUG 0
 #define OBSTACLES 0
+#define BUILD 0
 
 // Characters constants
 #define PLAYER_SKIN '$'
@@ -299,12 +300,13 @@ public:
     bool active; // if the obstacle is active or not
 
     Obstacle(int x, int y, char skin) {
-        if (game::obstacles_field[y][x]) { // If the obstacle is already in the field
+        this->x = x;
+        this->y = y;
+        // Check if the obstacle hits the border of the screen OR if the obstacle is already on the screen
+        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19 || game::obstacles_field[y][x]) {
             this->active = false;
             return;
         }
-        this->x = x;
-        this->y = y;
         this->skin = skin;
         this->hp = rand()%3+1;
         this->active = true;
@@ -353,6 +355,7 @@ public:
     int kills; // kills counter
     bool auto_fire; // auto fire status
     bool cross_fire; // cross fire status
+    bool build; // build status
     int fire_direction; // fire direction
 
     Player(): Character(10, 10, NORTH) {
@@ -362,12 +365,15 @@ public:
         this->kills = 0;
         this->auto_fire = false;
         this->cross_fire = false;
+        this->build = false;
         this->fire_direction = NORTH;
     }
 
     void fireBullet();
 
     void changeFireDirection(int direction);
+
+    void buildObstacle();
 };
 
 
@@ -597,6 +603,26 @@ void Player::changeFireDirection(int direction) {
         case BEFORE_KEY_DOWN:
             this->fire_direction = SOUTH;
             break;
+    }
+}
+
+
+void Player::buildObstacle() {
+    if (this->ammunitions < 5) return;
+
+    this->ammunitions -= 5;
+    if (this->fire_direction == NORTH) {
+        game::obstacles_field[this->y-1][this->x] = true;
+        game::obstacles.push_back(Obstacle(this->x, this->y-1, OBSTACLE_SKIN));
+    } else if (this->fire_direction == EAST) {
+        game::obstacles_field[this->y][this->x+1] = true;
+        game::obstacles.push_back(Obstacle(this->x+1, this->y, OBSTACLE_SKIN));
+    } else if (this->fire_direction == WEST) {
+        game::obstacles_field[this->y][this->x-1] = true;
+        game::obstacles.push_back(Obstacle(this->x-1, this->y, OBSTACLE_SKIN));
+    } else if (this->fire_direction == SOUTH) {
+        game::obstacles_field[this->y+1][this->x] = true;
+        game::obstacles.push_back(Obstacle(this->x, this->y+1, OBSTACLE_SKIN));
     }
 }
 

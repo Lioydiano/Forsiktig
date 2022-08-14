@@ -295,15 +295,22 @@ void mainloop() {
                     player.movePlayer(choice);
                 break;
             case BEFORE_KEY_UP: case BEFORE_KEY_DOWN: case BEFORE_KEY_LEFT: case BEFORE_KEY_RIGHT:
-                player.changeFireDirection(choice);
-                if (game::status == PLAYING && player.ammunitions > 0 && !player.auto_fire)
-                    player.fireBullet();
+                if (game::status == PLAYING) {
+                    player.changeFireDirection(choice);
+                    if (!player.build && !player.auto_fire)
+                        player.fireBullet();
+                    if (player.build)
+                        player.buildObstacle();
+                }
                 break;
             case 'x': case 'X':
                 player.auto_fire = !player.auto_fire;
                 break;
             case '+':
                 player.cross_fire = !player.cross_fire;
+                break;
+            case 'b': case 'B':
+                player.build = !player.build;
                 break;
         }
     }
