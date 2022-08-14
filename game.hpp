@@ -9,6 +9,10 @@
 Player player;
 
 void printField() {
+    int sum = 0;
+    for (auto& enemy : game::enemies)
+        sum += enemy.alive;
+
     std::cout << SS;
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++) {
@@ -47,15 +51,27 @@ void printField() {
             escape:
                 continue;
         }
+
+        if (i == 4)
+            std::cout << "        \x1b[1mPOINTS\x1b[0m";
+        else if (i == 5)
+            std::cout << "        \x1b[1m" << player.points << "\x1b[0m";
+        else if (i == 7)
+            std::cout << "        \x1b[1mENEMIES\x1b[0m";
+        else if (i == 8)
+            std::cout << "        \x1b[1m" << sum << "\x1b[0m";
+        else if (i == 10)
+            std::cout << "        \x1b[1mAMMUNITIONS\x1b[0m";
+        else if (i == 11)
+            std::cout << "        \x1b[1m" << player.ammunitions << "\x1b[0m";
+        else if (i == 13)
+            std::cout << "        \x1b[1mKILLS\x1b[0m";
+        else if (i == 14)
+            std::cout << "        \x1b[1m" << player.kills << "\x1b[0m";
+
         std::cout << '\n';
     }
-
-    int sum = 0;
-    for (auto& enemy : game::enemies)
-        sum += enemy.alive;
-
-    std::cout << "\x1b[1mPOINTS" << TEN_SPACES << "ENEMIES" << TEN_SPACES << "AMMUNITIONS" << std::endl;
-    std::cout << "  " << player.points << SEVENTEEN_SPACES << sum << SEVENTEEN_SPACES << player.ammunitions << std::endl << "\x1b[0m";
+    std::cout << std::flush;
 }
 
 void moveAllBullets() {
@@ -112,6 +128,7 @@ void updateField() {
                 if (enemies[j].value == 0) {
                     std::cout << '\x07'; // Beep
                     enemies[j].alive = false;
+                    player.kills++;
                 }
 
                 bullets[i].active = false;
