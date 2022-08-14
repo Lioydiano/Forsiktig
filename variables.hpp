@@ -303,6 +303,7 @@ public:
 
     int ammunitions; // ammunitions counter
     int points; // points counter
+    int kills; // kills counter
     bool auto_fire; // auto fire status
     bool cross_fire; // cross fire status
     int fire_direction; // fire direction
@@ -311,6 +312,7 @@ public:
         this->bullet_speed = SLOW;
         this->ammunitions = 100;
         this->points = 0;
+        this->kills = 0;
         this->auto_fire = false;
         this->cross_fire = false;
         this->fire_direction = NORTH;
