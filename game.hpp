@@ -39,11 +39,9 @@ void printField() {
                     goto escape;
                 }
             }
-            for (int k = 0; k < game::obstacles.size(); k++) {
-                if (i == game::obstacles[k].y && j == game::obstacles[k].x) {
-                    std::cout << std::string("\x1B[33m") + game::obstacles[k].skin + std::string("\033[0m");
-                    goto escape;
-                }
+            if (game::obstacles_field[i][j]) {
+                std::cout << std::string("\x1B[33m") + OBSTACLE_SKIN + std::string("\033[0m");
+                goto escape;
             }
             std::cout << game::field[i][j];
             escape:
@@ -213,6 +211,8 @@ void mainloop() {
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
     player.ammunitions = game::starting_ammunitions;
 
+    memset(game::obstacles_field, 0, sizeof(game::obstacles_field)); // Clear the obstacle's field
+
     srand(time(NULL));
     std::ios_base::sync_with_stdio(false);
     game::emptyField();
@@ -238,8 +238,6 @@ void mainloop() {
                 continue;
             
             moveAllBullets();
-            for (auto& obstacle: game::obstacles)
-                obstacle.checkHit();
             updateField();
             printField();
 

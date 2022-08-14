@@ -86,7 +86,7 @@ const double AI_DIFFICULTIES[] = {0.0, 0.25, 0.5, 0.75, 1.0};
 
 
 namespace game {
-        char field[20][50] = {' '}; // game field
+    char field[20][50] = {' '}; // game field
     const char void_field[20][50] = {
         {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
         {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
@@ -135,43 +135,7 @@ public:
         this->alive = true;
     }
 
-    void movePlayer(char choice) {
-        switch (choice) {
-            case 'w': case 'W':
-                if (game::field[this->y-1][this->x] != OBSTACLE_SKIN)
-                    this->y--;
-                this->direction = NORTH;
-                break;
-            case 'a': case 'A':
-                if (game::field[this->y][this->x-1] != OBSTACLE_SKIN)
-                    this->x--;
-                this->direction = WEST;
-                break;
-            case 's': case 'S':
-                if (game::field[this->y+1][this->x] != OBSTACLE_SKIN)
-                    this->y++;
-                this->direction = SOUTH;
-                break;
-            case 'd': case 'D':
-                if (game::field[this->y][this->x+1] != OBSTACLE_SKIN)                
-                    this->x++;
-                this->direction = EAST;
-                break;
-        }
-
-        // Check if the player is out of the screen
-        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
-            if (this->x <= 0 && this->direction == WEST) {
-                this->x = 48;
-            } else if (this->x >= 49 && this->direction == EAST) {
-                this->x = 1;
-            } else if (this->y <= 0 && this->direction == NORTH) {
-                this->y = 18;
-            } else if (this->y >= 19 && this->direction == SOUTH) {
-                this->y = 1;
-            }
-        }
-    }
+    void movePlayer(char choice);
 };
 
 class Bullet;
@@ -190,6 +154,7 @@ namespace game {
     std::vector<Enemy> enemies;
     std::vector<Obstacle> obstacles;
 
+    bool obstacles_field[20][50];
 
     void configure(bool standard) {
         if (standard) {
@@ -282,6 +247,45 @@ namespace game {
 };
 
 
+void Character::movePlayer(char choice) {
+    switch (choice) {
+        case 'w': case 'W':
+            if (!game::obstacles_field[this->y-1][this->x])
+                this->y--;
+            this->direction = NORTH;
+            break;
+        case 'a': case 'A':
+            if (!game::obstacles_field[this->y][this->x-1])
+                this->x--;
+            this->direction = WEST;
+            break;
+        case 's': case 'S':
+            if (!game::obstacles_field[this->y+1][this->x])
+                this->y++;
+            this->direction = SOUTH;
+            break;
+        case 'd': case 'D':
+            if (!game::obstacles_field[this->y][this->x+1])                
+                this->x++;
+            this->direction = EAST;
+            break;
+    }
+
+    // Check if the player is out of the screen
+    if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
+        if (this->x <= 0 && this->direction == WEST) {
+            this->x = 48;
+        } else if (this->x >= 49 && this->direction == EAST) {
+            this->x = 1;
+        } else if (this->y <= 0 && this->direction == NORTH) {
+            this->y = 18;
+        } else if (this->y >= 19 && this->direction == SOUTH) {
+            this->y = 1;
+        }
+    }
+}
+
+
 class Obstacle {
 public:
     int x; // x position
@@ -291,11 +295,18 @@ public:
     bool active; // if the obstacle is active or not
 
     Obstacle(int x, int y, char skin) {
+        if (game::obstacles_field[y][x]) { // If the obstacle is already in the field
+            this->active = false;
+            return;
+        }
         this->x = x;
         this->y = y;
         this->skin = skin;
         this->hp = rand()%3+1;
         this->active = true;
+
+        game::obstacles_field[y][x] = true; // Add the obstacle to the field
+        // This is done to prevent the enemies from spawning on top of the obstacle
     };
 
     void checkHit();
@@ -378,13 +389,15 @@ public:
     void move() {
         if (direction == NORTH) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y-1][this->x] == OBSTACLE_SKIN) {
+                if (game::obstacles_field[this->y-1][this->x]) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
                         if (obstacle.x == this->x && obstacle.y == this->y-1) {
                             obstacle.hp--;
-                            if (obstacle.hp == 0)
+                            if (obstacle.hp == 0) {
                                 obstacle.active = false;
+                                game::obstacles_field[this->y-1][this->x] = false;
+                            }
                             break;
                         }
                     }
@@ -394,13 +407,15 @@ public:
             }
         } else if (direction == EAST) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y][this->x+1] == OBSTACLE_SKIN) {
+                if (game::obstacles_field[this->y][this->x+1]) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
                         if (obstacle.x == this->x+1 && obstacle.y == this->y) {
                             obstacle.hp--;
-                            if (obstacle.hp == 0)
+                            if (obstacle.hp == 0) {
                                 obstacle.active = false;
+                                game::obstacles_field[this->y][this->x+1] = false;
+                            }
                             break;
                         }
                     }
@@ -410,13 +425,15 @@ public:
             }
         } else if (direction == WEST) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y][this->x-1] == OBSTACLE_SKIN) {
+                if (game::obstacles_field[this->y][this->x-1]) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
                         if (obstacle.x == this->x-1 && obstacle.y == this->y) {
                             obstacle.hp--;
-                            if (obstacle.hp == 0)
+                            if (obstacle.hp == 0) {
                                 obstacle.active = false;
+                                game::obstacles_field[this->y][this->x-1] = false;
+                            }
                             break;
                         }
                     }
@@ -426,13 +443,15 @@ public:
             }
         } else if (direction == SOUTH) {
             for (int i = 0; i < speed; i++) {
-                if (game::field[this->y+1][this->x] == OBSTACLE_SKIN) {
+                if (game::obstacles_field[this->y+1][this->x]) {
                     this->active = false;
                     for (auto& obstacle: game::obstacles) {
                         if (obstacle.x == this->x && obstacle.y == this->y+1) {
                             obstacle.hp--;
-                            if (obstacle.hp == 0)
+                            if (obstacle.hp == 0) {
                                 obstacle.active = false;
+                                game::obstacles_field[this->y+1][this->x] = false;
+                            }
                             break;
                         }
                     }
@@ -457,6 +476,7 @@ void Obstacle::checkHit() {
             this->hp--;
             if (!this->hp) {
                 this->active = false;
+                game::obstacles_field[this->y][this->x] = false;
                 break;
             }
         }
@@ -513,17 +533,21 @@ void Enemy::turn(bool smart, Player &player) {
 
 void Enemy::move() {
     if (this->direction == NORTH) {
-        if (game::field[this->x][this->y-1] != OBSTACLE_SKIN)
+        if (!game::obstacles_field[this->x][this->y-1]) {
             this->y--;
+        }
     } else if (this->direction == EAST) {
-        if (game::field[this->x+1][this->y] != OBSTACLE_SKIN)
+        if (!game::obstacles_field[this->x+1][this->y]) {
             this->x++;
+        }
     } else if (this->direction == WEST) {
-        if (game::field[this->x-1][this->y] != OBSTACLE_SKIN)
+        if (!game::obstacles_field[this->x-1][this->y]) {
             this->x--;
+        }
     } else if (this->direction == SOUTH) {
-        if (game::field[this->x][this->y+1] != OBSTACLE_SKIN)
+        if (!game::obstacles_field[this->x][this->y+1]) {
             this->y++;
+        }
     }
 
     if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
