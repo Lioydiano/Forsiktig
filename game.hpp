@@ -50,14 +50,6 @@ void printField() {
         std::cout << '\n';
     }
 
-    #if OBSTACLES
-        for (int i=0; i<20; i++) {
-            for (int j=0; j<50; j++)
-                std::cout << game::obstacles_field[i][j];
-            std::cout << '\n';
-        }
-    #endif
-
     int sum = 0;
     for (auto& enemy : game::enemies)
         sum += enemy.alive;

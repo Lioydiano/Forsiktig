@@ -1,7 +1,7 @@
 #include "game.hpp"
 // g++ forsiktig.cpp -o forsiktig.exe
 
-#define VERSION "1.3.0b4"
+#define VERSION "1.3.0"
 #define DATE "14-08-2022"
 
 

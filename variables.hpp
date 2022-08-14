@@ -78,11 +78,7 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define PROBABILITY_OF_ENEMY_MOVING 0.5
 #define PROBABILITY_OF_ENEMY_SHOOTING 0.3
 #define PROBABILITY_OF_ENEMY_TURNING 0.5
-#if OBSTACLES
-    #define PROBABILITY_OF_OBSTACLE 0.5
-#else
-    #define PROBABILITY_OF_OBSTACLE 0.05
-#endif
+#define PROBABILITY_OF_OBSTACLE 0.05
 
 // AI constants
 #define AI_DIFFICULTY_IDIOT 0
