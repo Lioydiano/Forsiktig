@@ -253,6 +253,8 @@ namespace game {
 
 
 void Character::movePlayer(char choice) {
+    int previous_x=this->x, previous_y=this->y;
+
     switch (choice) {
         case 'w': case 'W':
             if (!game::obstacles_field[this->y-1][this->x])
@@ -279,13 +281,25 @@ void Character::movePlayer(char choice) {
     // Check if the player is out of the screen
     if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
         if (this->x <= 0 && this->direction == WEST) {
-            this->x = 48;
+            if (!game::obstacles_field[this->y][48])
+                this->x = 48;
+            else
+                this->x = previous_x;
         } else if (this->x >= 49 && this->direction == EAST) {
-            this->x = 1;
+            if (!game::obstacles_field[this->y][1])
+                this->x = 1;
+            else
+                this->x = previous_x;
         } else if (this->y <= 0 && this->direction == NORTH) {
-            this->y = 18;
+            if (!game::obstacles_field[18][this->x])
+                this->y = 18;
+            else
+                this->y = previous_y;
         } else if (this->y >= 19 && this->direction == SOUTH) {
-            this->y = 1;
+            if (!game::obstacles_field[1][this->x])
+                this->y = 1;
+            else
+                this->y = previous_y;
         }
     }
 }
@@ -555,6 +569,8 @@ void Enemy::turn(bool smart, Player &player) {
 
 
 void Enemy::move() {
+    int previous_x=this->x, previous_y=this->y;
+
     if (this->direction == NORTH) {
         if (!game::obstacles_field[this->y-1][this->x])
             this->y--;
@@ -571,13 +587,25 @@ void Enemy::move() {
 
     if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
         if (this->x <= 0 && this->direction == WEST) {
-            this->x = 48;
+            if (!game::obstacles_field[this->y][48])
+                this->x = 48;
+            else
+                this->x = previous_x;
         } else if (this->x >= 49 && this->direction == EAST) {
-            this->x = 1;
+            if (!game::obstacles_field[this->y][1])
+                this->x = 1;
+            else
+                this->x = previous_x;
         } else if (this->y <= 0 && this->direction == NORTH) {
-            this->y = 18;
+            if (!game::obstacles_field[18][this->x])
+                this->y = 18;
+            else
+                this->y = previous_y;
         } else if (this->y >= 19 && this->direction == SOUTH) {
-            this->y = 1;
+            if (!game::obstacles_field[1][this->x])
+                this->y = 1;
+            else
+                this->y = previous_y;
         }
     }
 }
