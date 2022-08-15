@@ -48,12 +48,8 @@ void printField() {
                 goto escape;
             }
             if (game::mines_field[i][j]) {
-                for (auto& mine: game::mines) {
-                    if (i == mine.y && j == mine.x) {
-                        std::cout << std::string("\x1B[38m") + mine.skin + std::string("\033[0m");
-                        goto escape;
-                    }
-                }
+                std::cout << std::string("\x1B[35m") + game::field[i][j] + std::string("\033[0m");
+                goto escape;
             }
             std::cout << game::field[i][j];
             escape:
