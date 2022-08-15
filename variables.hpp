@@ -13,7 +13,7 @@
 // Debug
 #define DEBUG 0
 #define OBSTACLES 0
-#define BUILD 0
+#define BUILD 1
 
 // Characters constants
 #define PLAYER_SKIN '$'
@@ -159,7 +159,7 @@ namespace game {
     std::vector<Enemy> enemies;
     std::vector<Obstacle> obstacles;
 
-    bool obstacles_field[20][50];
+    bool obstacles_field[20][50]; // This prevents the enemies from spawning on top of obstacles
 
     void configure(bool standard) {
         if (standard) {
@@ -302,17 +302,28 @@ public:
     Obstacle(int x, int y, char skin) {
         this->x = x;
         this->y = y;
-        // Check if the obstacle hits the border of the screen OR if the obstacle is already on the screen
+        // Check if the obstacle hits the border of the screen
         if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
             this->active = false;
             return;
         }
-        this->skin = skin;
-        this->hp = rand()%3+1;
-        this->active = true;
+        // Check if the coordinates are already occupated by another obstacle
+        if (game::obstacles_field[this->y][this->x]) {
+            // Then sum their hp and set the obstacle as inactive
+            for (auto &obstacle: game::obstacles) {
+                if (obstacle.x == this->x && obstacle.y == this->y) {
+                    obstacle.hp += rand()%3+1;
+                    break;
+                }
+            }
+            this->active = false;
+        } else {
+            this->skin = skin;
+            this->hp = rand()%3+1;
+            this->active = true;
 
-        game::obstacles_field[y][x] = true; // Add the obstacle to the field
-        // This is done to prevent the enemies from spawning on top of the obstacle
+            game::obstacles_field[y][x] = true; // Add the obstacle to the field
+        }
     };
 
     void checkHit();
@@ -611,19 +622,15 @@ void Player::buildObstacle() {
     if (this->ammunitions < 5) return;
 
     this->ammunitions -= 5;
-    if (this->fire_direction == NORTH) {
-        game::obstacles_field[this->y-1][this->x] = true;
+    if (this->fire_direction == NORTH)
         game::obstacles.push_back(Obstacle(this->x, this->y-1, OBSTACLE_SKIN));
-    } else if (this->fire_direction == EAST) {
-        game::obstacles_field[this->y][this->x+1] = true;
+    else if (this->fire_direction == EAST)
         game::obstacles.push_back(Obstacle(this->x+1, this->y, OBSTACLE_SKIN));
-    } else if (this->fire_direction == WEST) {
-        game::obstacles_field[this->y][this->x-1] = true;
+     else if (this->fire_direction == WEST)
         game::obstacles.push_back(Obstacle(this->x-1, this->y, OBSTACLE_SKIN));
-    } else if (this->fire_direction == SOUTH) {
-        game::obstacles_field[this->y+1][this->x] = true;
+     else if (this->fire_direction == SOUTH)
         game::obstacles.push_back(Obstacle(this->x, this->y+1, OBSTACLE_SKIN));
-    }
+    
 }
 
 
