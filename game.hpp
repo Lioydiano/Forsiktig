@@ -47,6 +47,14 @@ void printField() {
                 std::cout << std::string("\x1B[33m") + OBSTACLE_SKIN + std::string("\033[0m");
                 goto escape;
             }
+            if (game::mines_field[i][j]) {
+                for (auto& mine: game::mines) {
+                    if (i == mine.y && j == mine.x) {
+                        std::cout << std::string("\x1B[38m") + mine.skin + std::string("\033[0m");
+                        goto escape;
+                    }
+                }
+            }
             std::cout << game::field[i][j];
             escape:
                 continue;
@@ -71,25 +79,6 @@ void printField() {
 
         std::cout << '\n';
     }
-    #if BUILD
-        std::cout << "SIZE: " << game::obstacles.size() << '\n';
-        for (auto& obstacle: game::obstacles)
-            std::cout << obstacle.hp << " ";
-        std::cout << '\n';
-        for (auto& obstacle: game::obstacles)
-            std::cout << obstacle.skin << " ";
-        std::cout << '\n';
-
-        for (int i=0; i<20; i++) {
-            for (int j=0; j<50; j++) {
-                if (game::obstacles_field[i][j])
-                    std::cout << std::string("\x1B[33m") + OBSTACLE_SKIN + std::string("\033[0m");
-                else
-                    std::cout << 0;
-            }
-            std::cout << '\n';
-        }
-    #endif
     std::cout << std::flush;
 }
 
@@ -118,6 +107,29 @@ void moveAllBullets() {
     }
 }
 
+void checkAllMines() {
+    for (auto& mine: game::mines) {
+        if (mine.triggered && !mine.just_triggered) {
+            mine.detonate(player);
+        } else if (mine.active) {
+            for (auto& enemy: game::enemies) {
+                if (enemy.x == mine.x && enemy.y == mine.y) {
+                    mine.trigger();
+                    break;
+                }
+            }
+            for (auto& bullet: game::bullets) {
+                if (bullet.x == mine.x && bullet.y == mine.y) {
+                    bullet.active = false;
+                    mine.trigger();
+                }
+            }
+        }
+    }
+    for (auto& mine: game::mines)
+        mine.just_triggered = false;
+}
+
 void updateField() {
     using namespace game; // This should be automatically unused after the scope dies
     bool died = false;
@@ -133,9 +145,19 @@ void updateField() {
             obstacles.erase(obstacles.begin() + i); // remove obstacle
     }
 
+    for (int i=0; i<mines.size(); i++) {
+        if (!mines[i].active)
+            mines.erase(mines.begin() + i); // remove mine
+    }
+
     for (auto& obstacle: game::obstacles) {
         if (obstacle.active) // This control shouldn't be necessary but it's better to be safe than sorry
             game::field[obstacle.y][obstacle.x] = obstacle.skin;
+    }
+
+    for (auto& mine: game::mines) {
+        if (mine.active) // This control shouldn't be necessary but it's better to be safe than sorry
+            game::field[mine.y][mine.x] = mine.skin;
     }
 
     for (int i=0; i<bullets.size(); i++) {
@@ -248,6 +270,7 @@ void mainloop() {
     player.ammunitions = game::starting_ammunitions;
 
     memset(game::obstacles_field, 0, sizeof(game::obstacles_field)); // Clear the obstacle's field
+    memset(game::mines_field, 0, sizeof(game::mines_field)); // Clear the mine's field
 
     srand(time(NULL));
     std::ios_base::sync_with_stdio(false);
@@ -274,6 +297,7 @@ void mainloop() {
                 continue;
             
             moveAllBullets();
+            checkAllMines();
             updateField();
             printField();
 
@@ -316,20 +340,43 @@ void mainloop() {
             case BEFORE_KEY_UP: case BEFORE_KEY_DOWN: case BEFORE_KEY_LEFT: case BEFORE_KEY_RIGHT:
                 if (game::status == PLAYING) {
                     player.changeFireDirection(choice);
-                    if (!player.build && !player.auto_fire)
+                    if (!player.mine && !player.build && !player.auto_fire)
                         player.fireBullet();
                     if (player.build)
                         player.buildObstacle();
+                    if (player.mine)
+                        player.placeMine();
                 }
                 break;
             case 'x': case 'X':
+                if (!player.auto_fire) {
+                    if (player.mine)
+                        player.mine = false;
+                    if (player.build)
+                        player.build = false;
+                }
                 player.auto_fire = !player.auto_fire;
                 break;
             case '+':
                 player.cross_fire = !player.cross_fire;
                 break;
             case 'b': case 'B':
+                if (!player.build) {
+                    if (player.mine)
+                        player.mine = false;
+                    if (player.auto_fire)
+                        player.auto_fire = false;
+                }
                 player.build = !player.build;
+                break;
+            case 'm': case 'M':
+                if (!player.mine) {
+                    if (player.build)
+                        player.build = false;
+                    if (player.auto_fire)
+                        player.auto_fire = false;
+                }
+                player.mine = !player.mine;
                 break;
         }
     }

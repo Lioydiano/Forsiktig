@@ -24,6 +24,8 @@
 #define BULLET_RIGHT '>'
 #define BULLET_LEFT '<'
 #define OBSTACLE_SKIN '='
+#define MINE_SKIN '*'
+#define TRIGGERED_MINE_SKIN '%'
 
 // Directional constants
 #define NORTH 'N'
@@ -147,6 +149,7 @@ class Bullet;
 class Enemy;
 class Player;
 class Obstacle;
+class Mine;
 
 namespace game {
     unsigned int starting_enemies;
@@ -158,8 +161,10 @@ namespace game {
     std::vector<Bullet> bullets;
     std::vector<Enemy> enemies;
     std::vector<Obstacle> obstacles;
+    std::vector<Mine> mines;
 
     bool obstacles_field[20][50]; // This prevents the enemies from spawning on top of obstacles
+    bool mines_field[20][50]; // This prevents the enemies from spawning on top of mines
 
     void configure(bool standard) {
         if (standard) {
@@ -344,6 +349,45 @@ public:
 };
 
 
+class Mine {
+public:
+    int x; // x position
+    int y; // y position
+    char skin; // skin of the mine
+    bool active; // if the mine is active
+    bool triggered; // if the mine has been triggered
+    bool just_triggered; // if the mine has just been triggered so that it can't explode this turn
+
+    Mine(int x, int y) {
+        this->x = x;
+        this->y = y;
+        this->skin = MINE_SKIN;
+        this->active = true;
+        this->triggered = false;
+        this->just_triggered = false;
+        // Check if the mine hits the border of the screen
+        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19)
+            return;
+        // Check if the coordinates are already occupated by another mine
+        if (game::mines_field[this->y][this->x]) {
+            return; // Unlike the obstacles, the mines can't be duplicated
+        } else {
+            game::mines_field[y][x] = true; // Add the mine to the field
+        }
+    };
+
+
+    void trigger() {
+        this->just_triggered = true;
+        this->triggered = true;
+        this->skin = TRIGGERED_MINE_SKIN;
+    };
+
+
+    void detonate(Player &player);
+};
+
+
 class Enemy: public Character {
 public:
 
@@ -381,6 +425,7 @@ public:
     bool auto_fire; // auto fire status
     bool cross_fire; // cross fire status
     bool build; // build status
+    bool mine; // mine status
     int fire_direction; // fire direction
 
     Player(): Character(10, 10, NORTH) {
@@ -391,6 +436,7 @@ public:
         this->auto_fire = false;
         this->cross_fire = false;
         this->build = false;
+        this->mine = false;
         this->fire_direction = NORTH;
     }
 
@@ -399,6 +445,8 @@ public:
     void changeFireDirection(int direction);
 
     void buildObstacle();
+
+    void placeMine();
 };
 
 
@@ -658,7 +706,73 @@ void Player::buildObstacle() {
         game::obstacles.push_back(Obstacle(this->x-1, this->y, OBSTACLE_SKIN));
      else if (this->fire_direction == SOUTH)
         game::obstacles.push_back(Obstacle(this->x, this->y+1, OBSTACLE_SKIN));
-    
+}
+
+
+void Mine::detonate(Player &player) {
+    if (!this->triggered)
+        return;
+
+    for (auto &bullet: game::bullets) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (bullet.x == this->x+i && bullet.y == this->y+j)
+                    bullet.active = false;
+            }
+        }
+    }
+    for (auto &enemy: game::enemies) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (enemy.x == this->x+i && enemy.y == this->y+j) {
+                    player.ammunitions += enemy.value;
+                    enemy.value--;
+                    if (enemy.value <= 0)
+                        enemy.alive = false;
+                }
+            }
+        }
+    }
+    for (auto &obstacle: game::obstacles) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (obstacle.x == this->x+i && obstacle.y == this->y+j) {
+                    obstacle.hp -= 1;
+                    if (obstacle.hp <= 0) {
+                        obstacle.active = false;
+                        game::obstacles_field[obstacle.y][obstacle.x] = false;
+                    }
+                }
+            }
+        }
+    }
+    for (auto &mine: game::mines) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (mine.x == this->x+i && mine.y == this->y+j)
+                    mine.trigger();
+            }
+        }
+    }
+
+    this->active = false; // The mine doesn't exist anymore
+    game::mines_field[this->y][this->x] = false; // Remove the mine from the field
+};
+
+
+void Player::placeMine() {
+    if (this->ammunitions < 3)
+        return;
+
+    this->ammunitions -= 3;
+    if (this->fire_direction == NORTH)
+        game::mines.push_back(Mine(this->x, this->y-1));
+    else if (this->fire_direction == EAST)
+        game::mines.push_back(Mine(this->x+1, this->y));
+    else if (this->fire_direction == WEST)
+        game::mines.push_back(Mine(this->x-1, this->y));
+    else if (this->fire_direction == SOUTH)
+        game::mines.push_back(Mine(this->x, this->y+1));
 }
 
 

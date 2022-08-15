@@ -1,7 +1,7 @@
 #include "game.hpp"
 // g++ forsiktig.cpp -o forsiktig.exe
 
-#define VERSION "1.4.0"
+#define VERSION "1.5.0a1"
 #define DATE "15-08-2022"
 
 
@@ -29,7 +29,8 @@ int main(int argc, char* argv[]) {
     std::cout << "- Use \x1b[35marrows\x1b[0m to fire a bullet or to build an obstacle\n";
     std::cout << "- '\x1b[35mx\x1b[0m' to enable/disable auto-strike\n";
     std::cout << "- '\x1b[35m+\x1b[0m' to enable/disable cross-strike\n";
-    std::cout << "- '\x1b[35mb\x1b[0m' to enable/disable build-mode\n\n";
+    std::cout << "- '\x1b[35mb\x1b[0m' to enable/disable build-mode\n";
+    std::cout << "- '\x1b[35mm\x1b[0m' to enable/disable mine-mode\n\n";
     std::cout << "Digits from \x1b[34m1\x1b[0m to \x1b[34m9\x1b[0m are your enemies, while you're a \x1b[31m$\x1b[0m\n";
     std::cout << "Avoid \x1b[32mbullets\x1b[0m fired from enemies, and shoot them to get ammunitions\n";
     getch();
