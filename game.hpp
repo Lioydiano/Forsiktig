@@ -72,11 +72,13 @@ void printField() {
         std::cout << '\n';
     }
     #if BUILD
+        std::cout << "SIZE: " << game::obstacles.size() << '\n';
         for (auto& obstacle: game::obstacles)
             std::cout << obstacle.hp << " ";
         std::cout << '\n';
         for (auto& obstacle: game::obstacles)
             std::cout << obstacle.skin << " ";
+        std::cout << '\n';
 
         for (int i=0; i<20; i++) {
             for (int j=0; j<50; j++) {
