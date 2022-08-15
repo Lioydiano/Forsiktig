@@ -1,7 +1,7 @@
 #include "game.hpp"
 // g++ forsiktig.cpp -o forsiktig.exe
 
-#define VERSION "1.4.0b1"
+#define VERSION "1.4.0"
 #define DATE "15-08-2022"
 
 
@@ -26,9 +26,10 @@ int main(int argc, char* argv[]) {
     std::cout << "- '\x1b[35mp\x1b[0m' to pause\n";
     std::cout << "- '\x1b[35mr\x1b[0m' to resume <-- you also start the game resuming it\n";
     std::cout << "- '\x1b[35mw\x1b[0m | \x1b[35ma\x1b[0m | \x1b[35ms\x1b[0m | \x1b[35md\x1b[0m' to step\n";
-    std::cout << "- Use \x1b[35marrows\x1b[0m to fire a bullet\n";
+    std::cout << "- Use \x1b[35marrows\x1b[0m to fire a bullet or to build an obstacle\n";
     std::cout << "- '\x1b[35mx\x1b[0m' to enable/disable auto-strike\n";
-    std::cout << "- '\x1b[35m+\x1b[0m' to enable/disable cross-strike\n\n";
+    std::cout << "- '\x1b[35m+\x1b[0m' to enable/disable cross-strike\n";
+    std::cout << "- '\x1b[35mb\x1b[0m' to enable/disable build-mode\n\n";
     std::cout << "Digits from \x1b[34m1\x1b[0m to \x1b[34m9\x1b[0m are your enemies, while you're a \x1b[31m$\x1b[0m\n";
     std::cout << "Avoid \x1b[32mbullets\x1b[0m fired from enemies, and shoot them to get ammunitions\n";
     getch();

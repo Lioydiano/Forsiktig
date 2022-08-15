@@ -86,3 +86,7 @@ POINTS          ENEMIES          AMMUNITIONS
 ```
 
 Avoid green bullets, and shoot blue enemies to get ammunitions!
+
+## Release notes
+
+You can find the release notes of the updates [`here`](ReleaseNotes.md).
