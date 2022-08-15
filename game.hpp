@@ -71,6 +71,21 @@ void printField() {
 
         std::cout << '\n';
     }
+    #if BUILD
+        for (auto& obstacle: game::obstacles)
+            std::cout << obstacle.hp << " ";
+        std::cout << '\n';
+
+        for (int i=0; i<20; i++) {
+            for (int j=0; j<50; j++) {
+                if (game::obstacles_field[i][j])
+                    std::cout << std::string("\x1B[33m") + OBSTACLE_SKIN + std::string("\033[0m");
+                else
+                    std::cout << 0;
+            }
+            std::cout << '\n';
+        }
+    #endif
     std::cout << std::flush;
 }
 

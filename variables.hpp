@@ -13,7 +13,7 @@
 // Debug
 #define DEBUG 0
 #define OBSTACLES 0
-#define BUILD 0
+#define BUILD 1
 
 // Characters constants
 #define PLAYER_SKIN '$'
