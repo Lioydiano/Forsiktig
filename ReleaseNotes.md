@@ -2,6 +2,48 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.5.0` (15 August 2022)
+
+- Added `mine`s
+
+The mine is triggered when the player steps on it, or when a bullet hits it, or when another mine detonates.
+
+```batch
+000000000
+000XXX000
+000X*X000  The "X" area is damaged by the "*" mine
+000XXX000
+000000000
+000000000
+```
+
+In the below picture, the triggered mine is an "%".
+
+```batch
+##################################################
+#                                                #
+#                                             =  #
+#            =                                   #
+#     <    << 2                        *         #        POINTS
+#                                        **      #        165
+#                                       ** *     #
+#                             =            *8    #        ENEMIES
+#                                        *$*  8  #        6
+#       ^                                * %     #
+#                                            =   #        AMMUNITIONS
+#                                          7     #        999524
+#=                                            v  #
+#  4 >                                           #        KILLS
+#                                                #        0
+#                                                #
+#                                                #
+#       5                   =                    #
+#            *                                   #
+##################################################
+```
+
+The player can also enter mine mode by pressing the `m`/`M` key.
+
 ## `v1.4.0` (15 August 2022)
 
 - The player can now **build obstacles**.
