@@ -13,7 +13,7 @@
 // Debug
 #define DEBUG 0
 #define OBSTACLES 0
-#define BUILD 1
+#define BUILD 0
 
 // Characters constants
 #define PLAYER_SKIN '$'
@@ -303,7 +303,7 @@ public:
         this->x = x;
         this->y = y;
         // Check if the obstacle hits the border of the screen OR if the obstacle is already on the screen
-        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19 || game::obstacles_field[y][x]) {
+        if (this->x <= 0 || this->x >= 49 || this->y <= 0 || this->y >= 19) {
             this->active = false;
             return;
         }
