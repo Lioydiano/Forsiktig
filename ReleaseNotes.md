@@ -2,6 +2,12 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.6.0` (17 August 2022)
+
+- Set the bullet speed
+
+You can set the bullet speed choosing between `SLOW`, `MEDIUM` and `FAST` by clicking `1`/`2`/`3`.
+
 ## `v1.5.1` (17 August 2022)
 
 - `mine`s are no more triggered by bullets
