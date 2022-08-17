@@ -440,6 +440,20 @@ public:
         this->fire_direction = NORTH;
     }
 
+    void changeBulletSpeed(char speed) {
+        switch (speed) {
+            case '1':
+                this->bullet_speed = SLOW;
+                break;
+            case '2':
+                this->bullet_speed = MEDIUM;
+                break;
+            case '3':
+                this->bullet_speed = FAST;
+                break;
+        }
+    }
+
     void fireBullet();
 
     void changeFireDirection(int direction);

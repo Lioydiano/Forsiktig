@@ -368,6 +368,9 @@ void mainloop() {
                 }
                 player.mine = !player.mine;
                 break;
+            case '1': case '2': case '3':
+                player.changeBulletSpeed(choice);
+                break;
         }
     }
 }
