@@ -114,12 +114,6 @@ void checkAllMines() {
                     break;
                 }
             }
-            for (auto& bullet: game::bullets) {
-                if (bullet.x == mine.x && bullet.y == mine.y) {
-                    bullet.active = false;
-                    mine.trigger();
-                }
-            }
         }
     }
     for (auto& mine: game::mines)

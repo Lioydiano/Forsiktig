@@ -2,6 +2,10 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.5.1` (17 August 2022)
+
+- `mine`s are no more triggered by bullets
+
 ## `v1.5.0` (15 August 2022)
 
 - Added `mine`s
