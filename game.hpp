@@ -32,6 +32,15 @@ void printField() {
                     goto escape;
                 }
             }
+            for (int k = 0; k < game::bosses.size(); k++) {
+                if (i == game::bosses[k].y && j == game::bosses[k].x) {
+                    if (game::bosses[k].alive)
+                        std::cout << std::string("\x1B[93m\x1b[1m") + game::bosses[k].skin + std::string("\033[0m");
+                    else
+                        std::cout << "\x1B[93m@\033[0m";
+                    goto escape;
+                }
+            }
             for (int k = 0; k < game::bullets.size(); k++) {
                 if (!game::bullets[k].active)
                     continue;
@@ -130,6 +139,11 @@ void updateField() {
             enemies.erase(enemies.begin() + i); // remove enemy
     }
 
+    for (int i=0; i<bosses.size(); i++) {
+        if (!bosses[i].alive)
+            bosses.erase(bosses.begin() + i); // remove boss
+    }
+
     for (int i=0; i<obstacles.size(); i++) {
         if (!obstacles[i].active)
             obstacles.erase(obstacles.begin() + i); // remove obstacle
@@ -159,6 +173,22 @@ void updateField() {
                 if (enemies[j].value == 0) {
                     std::cout << '\x07'; // Beep
                     enemies[j].alive = false;
+                    player.kills++;
+                }
+
+                bullets[i].active = false;
+                bullets.erase(bullets.begin() + i); // remove bullet from the vector
+                break;
+            }
+        }
+        for (int j=0; j<bosses.size(); j++) {
+            if (bullets[i].x == bosses[j].x && bullets[i].y == bosses[j].y && bullets[i].fired == PLAYER) {
+                
+                bosses[j].value--;
+
+                if (bosses[j].value == 0) {
+                    std::cout << '\x07'; // Beep
+                    bosses[j].alive = false;
                     player.kills++;
                 }
 
@@ -257,6 +287,7 @@ void mainloop() {
 
     for (int i=0; i<game::starting_enemies; i++)
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
+    // game::bosses.push_back(Boss(42, 5, SOUTH));
     player.ammunitions = game::starting_ammunitions;
 
     memset(game::obstacles_field, 0, sizeof(game::obstacles_field)); // Clear the obstacle's field
@@ -274,10 +305,12 @@ void mainloop() {
     std::mt19937 gen(rd());
     std::bernoulli_distribution turning_distribution(PROBABILITY_OF_ENEMY_TURNING);
     std::bernoulli_distribution shooting_distribution(PROBABILITY_OF_ENEMY_SHOOTING);
+    std::bernoulli_distribution boss_shooting_distribution(PROBABILITY_OF_BOSS_SHOOTING);
     std::bernoulli_distribution moving_distribution(PROBABILITY_OF_ENEMY_MOVING);
     std::bernoulli_distribution appearing_distribution(PROBABILITY_OF_ENEMY_APPEARING);
     std::bernoulli_distribution intelligence_distribution(game::AI);
     std::bernoulli_distribution obstacle_distribution(PROBABILITY_OF_OBSTACLE);
+    std::bernoulli_distribution boss_distribution(PROBABILITY_OF_BOSS_APPEARING);
 
     char choice;
     while (choice != 'q') {
@@ -302,10 +335,22 @@ void mainloop() {
                     enemy.move();
                 }
             }
+            for (auto& boss: game::bosses) {
+                if (!boss.alive)
+                    continue;
+                if (boss_shooting_distribution(gen))
+                    boss.fireBullet();
+                if (turning_distribution(gen))
+                    boss.turn(intelligence_distribution(gen), player);
+                if (moving_distribution(gen))
+                    boss.move();
+            }
             if (appearing_distribution(gen))
                 game::random::addEnemy(rand()%48+1, rand()%18+1);
             if (obstacle_distribution(gen))
                 game::random::addObstacle(rand()%48+1, rand()%18+1);
+            if (boss_distribution(gen))
+                game::random::addBoss(rand()%48+1, rand()%18+1);
 
             if (player.auto_fire)
                 player.fireBullet();

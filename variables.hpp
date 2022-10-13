@@ -18,6 +18,7 @@
 // Characters constants
 #define PLAYER_SKIN '$'
 #define ENEMY_SKIN '&'
+#define BOSS_SKIN '%'
 #define DIED_SKIN '@'
 #define BULLET_UP '^'
 #define BULLET_DOWN 'v'
@@ -78,8 +79,10 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 
 // Probability constants
 #define PROBABILITY_OF_ENEMY_APPEARING 0.02
+#define PROBABILITY_OF_BOSS_APPEARING 0.01
 #define PROBABILITY_OF_ENEMY_MOVING 0.5
 #define PROBABILITY_OF_ENEMY_SHOOTING 0.3
+#define PROBABILITY_OF_BOSS_SHOOTING 0.75
 #define PROBABILITY_OF_ENEMY_TURNING 0.5
 #define PROBABILITY_OF_OBSTACLE 0.05
 
@@ -147,6 +150,7 @@ public:
 
 class Bullet;
 class Enemy;
+class Boss;
 class Player;
 class Obstacle;
 class Mine;
@@ -161,6 +165,7 @@ namespace game {
     std::vector<Bullet> bullets;
     std::vector<Enemy> enemies;
     std::vector<Obstacle> obstacles;
+    std::vector<Boss> bosses;
     std::vector<Mine> mines;
 
     bool obstacles_field[20][50]; // This prevents the enemies from spawning on top of obstacles
@@ -461,6 +466,27 @@ public:
     void buildObstacle();
 
     void placeMine();
+};
+
+
+class Boss: public Enemy {
+public:
+
+    Boss (int x_origin, int y_origin, int direction): Enemy(x_origin, y_origin, direction) {
+        this->value = 10;
+        this->skin = BOSS_SKIN;
+        this->alive = true;
+    }
+
+    char getSkin() {
+        if (!this->alive)
+            this->skin = DIED_SKIN;
+        return this->skin;
+    }
+    
+    void turn(bool smart, Player &player) {
+        this->Enemy::turn(true, player);
+    }
 };
 
 
@@ -798,6 +824,10 @@ namespace game {
 
         void addEnemy(int x, int y) {
             game::enemies.push_back(Enemy(x, y, direction()));
+        }
+
+        void addBoss(int x, int y) {
+            game::enemies.push_back(Boss(x, y, direction()));
         }
 
         void addObstacle(int x, int y) {
