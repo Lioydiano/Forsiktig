@@ -183,7 +183,7 @@ void updateField() {
         }
         for (int j=0; j<bosses.size(); j++) {
             if (bullets[i].x == bosses[j].x && bullets[i].y == bosses[j].y && bullets[i].fired == PLAYER) {
-                
+                player.ammunitions += bosses[j].value;
                 bosses[j].value--;
 
                 if (bosses[j].value == 0) {
