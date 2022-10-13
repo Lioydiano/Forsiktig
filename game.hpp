@@ -349,8 +349,10 @@ void mainloop() {
                 game::random::addEnemy(rand()%48+1, rand()%18+1);
             if (obstacle_distribution(gen))
                 game::random::addObstacle(rand()%48+1, rand()%18+1);
-            if (boss_distribution(gen))
-                game::random::addBoss(rand()%48+1, rand()%18+1);
+            if (boss_distribution(gen)) {
+                if (game::bosses.size() <= 2)
+                    game::random::addBoss(rand()%48+1, rand()%18+1);
+            }
 
             if (player.auto_fire)
                 player.fireBullet();
