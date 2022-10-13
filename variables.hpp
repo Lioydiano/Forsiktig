@@ -827,7 +827,7 @@ namespace game {
         }
 
         void addBoss(int x, int y) {
-            game::enemies.push_back(Boss(x, y, direction()));
+            game::bosses.push_back(Boss(x, y, direction()));
         }
 
         void addObstacle(int x, int y) {
