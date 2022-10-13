@@ -35,9 +35,9 @@ void printField() {
             for (int k = 0; k < game::bosses.size(); k++) {
                 if (i == game::bosses[k].y && j == game::bosses[k].x) {
                     if (game::bosses[k].alive)
-                        std::cout << std::string("\x1B[93m\x1b[1m") + game::bosses[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1B[90m\x1b[1m") + game::bosses[k].skin + std::string("\033[0m");
                     else
-                        std::cout << "\x1B[93m@\033[0m";
+                        std::cout << "\x1B[90m@\033[0m";
                     goto escape;
                 }
             }
