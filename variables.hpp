@@ -473,7 +473,7 @@ class Boss: public Enemy {
 public:
 
     Boss (int x_origin, int y_origin, int direction): Enemy(x_origin, y_origin, direction) {
-        this->value = 10;
+        this->value = rand()%9+1;
         this->skin = BOSS_SKIN;
         this->alive = true;
     }
