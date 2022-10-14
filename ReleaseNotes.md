@@ -2,6 +2,18 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.7.0` (14 October 2022)
+
+- Added the `smart enemy`, also known as `YWSE` {Your Worst and Smartest Enemy}
+
+The `smart enemy` is represented by a gray `%`.
+
+It will move faster, will search for the player (`$`) and will try to kill them.
+Its AI is based on the `enemy` AI but it's set to the maximum value.
+Its `HP` is randomly generated between `1` and `10`.
+
+The `YWSE` randomly respawns after its death, with a probability of `1%` for each frame.
+
 ## `v1.6.0` (17 August 2022)
 
 - Set the bullet speed
