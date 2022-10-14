@@ -287,7 +287,6 @@ void mainloop() {
 
     for (int i=0; i<game::starting_enemies; i++)
         game::enemies.push_back(Enemy(rand()%48+1, rand()%18+1, SOUTH));
-    // game::bosses.push_back(Boss(42, 5, SOUTH));
     player.ammunitions = game::starting_ammunitions;
 
     memset(game::obstacles_field, 0, sizeof(game::obstacles_field)); // Clear the obstacle's field
@@ -341,7 +340,7 @@ void mainloop() {
                 if (boss_shooting_distribution(gen))
                     boss.fireBullet();
                 if (turning_distribution(gen))
-                    boss.turn(intelligence_distribution(gen), player);
+                    boss.turn(true, player);
                 if (moving_distribution(gen))
                     boss.move();
             }
