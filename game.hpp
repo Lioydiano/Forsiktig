@@ -13,7 +13,7 @@ void printField() {
     for (auto& enemy : game::enemies)
         sum += enemy.alive;
 
-    std::cout << SS;
+    clearScreen(); // Clear screen (prevents flickering)
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++) {
             if (i == player.y && j == player.x) {
@@ -26,18 +26,18 @@ void printField() {
             for (int k = 0; k < game::enemies.size(); k++) {
                 if (i == game::enemies[k].y && j == game::enemies[k].x) {
                     if (game::enemies[k].alive)
-                        std::cout << std::string("\x1b[1m\x1B[94m") + game::enemies[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1b[1m\x1b[94m") + game::enemies[k].skin + std::string("\033[0m");
                     else
-                        std::cout << "\x1B[94m@\033[0m";
+                        std::cout << "\x1b[94m@\033[0m";
                     goto escape;
                 }
             }
             for (int k = 0; k < game::bosses.size(); k++) {
                 if (i == game::bosses[k].y && j == game::bosses[k].x) {
                     if (game::bosses[k].alive)
-                        std::cout << std::string("\x1B[90m\x1b[1m") + game::bosses[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1b[90m\x1b[1m") + game::bosses[k].skin + std::string("\033[0m");
                     else
-                        std::cout << "\x1B[90m@\033[0m";
+                        std::cout << "\x1b[90m@\033[0m";
                     goto escape;
                 }
             }
@@ -46,18 +46,18 @@ void printField() {
                     continue;
                 if (i == game::bullets[k].y && j == game::bullets[k].x) {
                     if (game::bullets[k].fired == PLAYER)
-                        std::cout << std::string("\x1B[95m\x1b[1m") + game::bullets[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1b[95m\x1b[1m") + game::bullets[k].skin + std::string("\033[0m");
                     else
-                        std::cout << std::string("\x1B[92m") + game::bullets[k].skin + std::string("\033[0m");
+                        std::cout << std::string("\x1b[92m") + game::bullets[k].skin + std::string("\033[0m");
                     goto escape;
                 }
             }
             if (game::obstacles_field[i][j]) {
-                std::cout << std::string("\x1B[33m") + OBSTACLE_SKIN + std::string("\033[0m");
+                std::cout << std::string("\x1b[33m") + OBSTACLE_SKIN + std::string("\033[0m");
                 goto escape;
             }
             if (game::mines_field[i][j]) {
-                std::cout << std::string("\x1B[35m") + game::field[i][j] + std::string("\033[0m");
+                std::cout << std::string("\x1b[35m") + game::field[i][j] + std::string("\033[0m");
                 goto escape;
             }
             std::cout << game::field[i][j];
@@ -164,9 +164,9 @@ void updateField() {
             game::field[mine.y][mine.x] = mine.skin;
     }
 
-    for (int i=0; i<bullets.size(); i++) {
+    for (int i=0; i<game::bullets.size(); i++) {
         for (int j=0; j<enemies.size(); j++) {
-            if (bullets[i].x == enemies[j].x && bullets[i].y == enemies[j].y && bullets[i].fired == PLAYER) {
+            if (game::bullets[i].x == enemies[j].x && game::bullets[i].y == enemies[j].y && game::bullets[i].fired == PLAYER) {
                 player.ammunitions += enemies[j].value;
                 enemies[j].value--;
 
@@ -176,13 +176,13 @@ void updateField() {
                     player.kills++;
                 }
 
-                bullets[i].active = false;
-                bullets.erase(bullets.begin() + i); // remove bullet from the vector
+                game::bullets[i].active = false;
+                game::bullets.erase(game::bullets.begin() + i); // remove bullet from the vector
                 break;
             }
         }
         for (int j=0; j<bosses.size(); j++) {
-            if (bullets[i].x == bosses[j].x && bullets[i].y == bosses[j].y && bullets[i].fired == PLAYER) {
+            if (game::bullets[i].x == bosses[j].x && game::bullets[i].y == bosses[j].y && game::bullets[i].fired == PLAYER) {
                 player.ammunitions += bosses[j].value;
                 bosses[j].value--;
 
@@ -192,12 +192,12 @@ void updateField() {
                     player.kills++;
                 }
 
-                bullets[i].active = false;
-                bullets.erase(bullets.begin() + i); // remove bullet from the vector
+                game::bullets[i].active = false;
+                game::bullets.erase(game::bullets.begin() + i); // remove bullet from the vector
                 break;
             }
         }
-        if (bullets[i].x == player.x && bullets[i].y == player.y && bullets[i].fired == ENEMY)
+        if (game::bullets[i].x == player.x && game::bullets[i].y == player.y && game::bullets[i].fired == ENEMY)
             died = true;
     }
 
