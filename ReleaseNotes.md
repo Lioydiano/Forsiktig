@@ -2,6 +2,22 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.7.1` (4 December 2022)
+
+The `YWSE` randomly respawns after its death, with a probability of `0.1%` for each frame, reduced by `-90%` compared to previous patch (`v1.7.0`).
+
+```c++
+#define PROBABILITY_OF_ENEMY_APPEARING 0.02
+#define PROBABILITY_OF_BOSS_APPEARING 0.001
+#define PROBABILITY_OF_ENEMY_MOVING 0.5
+#define PROBABILITY_OF_ENEMY_SHOOTING 0.3
+#define PROBABILITY_OF_BOSS_SHOOTING 0.5
+#define PROBABILITY_OF_ENEMY_TURNING 0.5
+#define PROBABILITY_OF_OBSTACLE 0.05
+```
+
+As can be seen in the code taken from `variables.hpp` the probability of the `YWSE` shooting is `+66%` than the probability of an `enemy` shooting, reduced by `-17%` compared to previous patch.
+
 ## `v1.7.0` (14 October 2022)
 
 - Added the `smart enemy`, also known as `YWSE` {Your Worst and Smartest Enemy}
