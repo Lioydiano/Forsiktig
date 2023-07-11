@@ -30,7 +30,7 @@ Instructions:
 - 'p' to pause
 - 'r' to resume <-- you also start the game resuming it
 - 'w | a | s | d' to step
-- Use arrows to fire a bullet
+- Use arrows (or 'i | j | k | l' on Linux) to fire a bullet
 - 'x' to enable/disable auto-strike
 
 Digits from 1 to 9 are your enemies, while you're a $

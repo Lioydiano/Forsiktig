@@ -222,18 +222,31 @@ void updateField() {
 
 char getCharOrArrow() {
     char c = getch();
-    if (c == KEY_ESC) { // Skip the 224 prefix
-        switch (getch()) {
-            case AFTER_KEY_UP:
-                return BEFORE_KEY_UP;
-            case AFTER_KEY_DOWN:
-                return BEFORE_KEY_DOWN;
-            case AFTER_KEY_LEFT:
-                return BEFORE_KEY_LEFT;
-            case AFTER_KEY_RIGHT:
-                return BEFORE_KEY_RIGHT;
+    #ifdef _WIN32
+        if (c == KEY_ESC) { // Skip the 224 prefix
+            switch (getch()) {
+                case AFTER_KEY_UP:
+                    return BEFORE_KEY_UP;
+                case AFTER_KEY_DOWN:
+                    return BEFORE_KEY_DOWN;
+                case AFTER_KEY_LEFT:
+                    return BEFORE_KEY_LEFT;
+                case AFTER_KEY_RIGHT:
+                    return BEFORE_KEY_RIGHT;
+            }
         }
-    }
+    #elif __linux__
+        switch (c) {
+            case 'I': case 'i':
+                return BEFORE_KEY_UP;
+            case 'L': case 'l':
+                return BEFORE_KEY_RIGHT;
+            case 'K': case 'k':
+                return BEFORE_KEY_DOWN;
+            case 'J': case 'j':
+                return BEFORE_KEY_LEFT;
+        }
+    #endif
     return c; // This one could be in an else branch but it triggers g++ warnings
 }
 

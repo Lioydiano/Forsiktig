@@ -1,7 +1,7 @@
 #include "game.hpp"
 // g++ forsiktig.cpp -o forsiktig.exe
 
-#define VERSION "1.9.0"
+#define VERSION "1.9.1"
 #define DATE "11-7-2023"
 
 
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     std::cout << "\t\t\t- '\x1b[35mp\x1b[0m' to \x1b[3mpause\x1b[0m\n";
     std::cout << "\t\t\t- '\x1b[35mr\x1b[0m' to \x1b[3mresume\x1b[0m <-- \x1b[3mstart\x1b[0m the game\n";
     std::cout << "\t\t\t- '\x1b[35mw\x1b[0m | \x1b[35ma\x1b[0m | \x1b[35ms\x1b[0m | \x1b[35md\x1b[0m' to step\n";
-    std::cout << "\t\t\t- Use \x1b[35marrows\x1b[0m to fire a bullet\n";
+    std::cout << "\t\t\t- '\x1b[35mi\x1b[0m | \x1b[35mj\x1b[0m | \x1b[35mk\x1b[0m | \x1b[35ml\x1b[0m' to fire a bullet\n";
     std::cout << "\t\t\t- '\x1b[35mx\x1b[0m' to enable/disable auto-strike\n";
     std::cout << "\t\t\t- '\x1b[35m+\x1b[0m' to enable/disable cross-strike\n";
     std::cout << "\t\t\t- '\x1b[35mb\x1b[0m' to enable/disable build-mode\n";

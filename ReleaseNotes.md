@@ -2,6 +2,10 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.9.1` (11 July 2023)
+
+- Compatibility with Linux
+
 ## `v1.7.0` (14 October 2022)
 
 - Added the `smart enemy`, also known as `YWSE` {Your Worst and Smartest Enemy}
