@@ -13,7 +13,11 @@ void printField() {
     for (auto& enemy : game::enemies)
         sum += enemy.alive;
 
-    clearScreen(); // Clear screen (prevents flickering)
+    #ifdef _WIN32
+        clearScreen(); // Clear screen (prevents flickering)
+    #elif __linux__
+        std::cout << "\033[2J\033[1;1H"; // Clear screen (prevents flickering)
+    #endif
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 50; j++) {
             if (i == player.y && j == player.x) {

@@ -3,10 +3,11 @@
 #include <map>
 #include <string>
 #include <cstring>
-#include <conio.h>
 
 #include "utilities.hpp"
-#include "clearScreen.hpp"
+#ifdef _WIN32
+    #include "clearScreen.hpp"
+#endif
 #include "settings.hpp"
 
 
@@ -74,8 +75,13 @@ char directional_chars[] = {'w', 'd', 'a', 's'};
 #define TEN_SPACES "          "
 #define SEVENTEEN_SPACES "               "
 #define SS "\33[2J\33[H" // Scroll Screen
-#define CLS clearScreen(true, false) // CLear Screen (with spaces but without keeping attributes)
-#define CLSa clearScreen(true, true) // CLear Screen (with spaces and keeping attributes)
+#ifdef _WIN32
+    #define CLS clearScreen(true, false) // CLear Screen (with spaces but without keeping attributes)
+    #define CLSa clearScreen(true, true) // CLear Screen (with spaces and keeping attributes)
+#elif __linux__
+    #define CLS std::cout << "\033[2J\033[1;1H" // CLear Screen (with spaces but without keeping attributes)
+    #define CLSa std::cout << "\033[2J\033[1;1H" // CLear Screen (with spaces and keeping attributes)
+#endif
 
 // Probability constants
 #define PROBABILITY_OF_ENEMY_APPEARING 0.02
