@@ -2,6 +2,14 @@
 
 Here you can find the release notes for each version of `Forsiktig` since `v1`.
 
+## `v1.9.3` (21 July 2023)
+
+- Updated the `README.md` file
+
+## `v1.9.2` (21 July 2023)
+
+- Cross-platform intro screen
+
 ## `v1.9.1` (11 July 2023)
 
 - Compatibility with Linux

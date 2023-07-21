@@ -1,29 +1,40 @@
 # `Forsiktig`
 
-Forsiktig is a terminal shooting game.
+Forsiktig is a terminal 2D shooting game.
 
 ## OS Compatibility
 
-Forsiktig is compatible with only Windows, mostly due to the use of the platform-specific `conio.h`.
+⚠️ - Until `v1.9.1` Forsiktig was compatible with only Windows due to `conio.h`.
+
+Since `v1.9.1` Forsiktig is compatible with Windows and Linux.
 
 ## Download
 
-To download the latest version of Forsiktig, go to [`GitHub`](https://github.com/Lioydiano/Forsiktig) and then download the [`.exe`](https://github.com/Lioydiano/Forsiktig/blob/main/forsiktig.exe?raw=true) file.
+Executable files are available for both OSs in the [`download page`](https://flak-zoso.github.io/src/repo/Forsiktig/about.html).
 
-## Play
+Source code is available in the [`releases`](https://github.com/Lioydiano/Forsiktig/releases) in `.zip` format.
 
-Once you have your `.exe` file, you can play Forsiktig by running it.
-You should run it with `Windows Terminal` (WT), which supports colors.
+## Run
+
+Once you have your `forsiktig.exe`/`forsiktig` file, you can play Forsiktig by running it.
+
+```bash
+
+user@user:~/Downloads$ ./forsiktig
+
+```
+
+On Windows you should run it with `Windows Terminal` (WT), which supports colors.
 
 ```batch
 
-    C:\Users\YOUR_USERNAME\Downloads> Forsiktig
+C:\Users\YOUR_USERNAME\Downloads> Forsiktig
 
 ```
 
 You will see the instructions on how to play the game.
 
-```batch
+```txt
 
 Instructions:
 - 'q' to quit
@@ -54,6 +65,8 @@ If you want to go with the default settings (10fps, 4 starting enemies, 100 ammu
 Standard configuration loaded
 
 ```
+
+## Play
 
 Now you're ready to play. You just have to send a key, and the game will start.
 By default it's paused, you can resume it by pressing `r`/`R`.
@@ -86,6 +99,10 @@ POINTS          ENEMIES          AMMUNITIONS
 ```
 
 Avoid green bullets, and shoot blue enemies to get ammunitions!
+
+## Rules
+
+Figure the rules out by yourself, it's part of the game!
 
 ## Release notes
 
