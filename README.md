@@ -1,4 +1,6 @@
 # `Forsiktig`
+![image](https://github.com/Lioydiano/Forsiktig/assets/83119697/648532b3-156a-4c64-bc14-825c4ea69710)
+
 
 Forsiktig is a terminal 2D shooting game.
 
